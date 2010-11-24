@@ -222,8 +222,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>git@github.com:wakaleo/maven-schemaspy-plugin.git</connection>
-        <developerConnection>git@github.com:wakaleo/maven-schemaspy-plugin.git</developerConnection>
-        <url>https://github.com/wakaleo/maven-schemaspy-plugin</url>
+        <connection>scm:git:ssh://github.com/wakaleo/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/wakaleo/${project.artifactId}.git</developerConnection>
+        <url>http://github.com/wakaleo/${project.artifactId}</url>
     </scm>
 </project>
