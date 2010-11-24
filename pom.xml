@@ -210,6 +210,11 @@
             <name>Wakaleo Maven Repository</name>
             <url>ftp://maven.wakaleo.com/repos</url>
         </repository>
+        <snapshotRepository>
+            <id>wakaleo.repository</id>
+            <name>Wakaleo Maven Repository</name>
+            <url>ftp://maven.wakaleo.com/snapshots</url>
+        </snapshotRepository>
         <site>
             <id>wakaleo.repository.website</id>
             <url>ftp://maven.wakaleo.com/mojo/maven-schemaspy-plugin</url>
