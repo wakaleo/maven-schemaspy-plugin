@@ -364,12 +364,18 @@ public class SchemaSpyReport extends AbstractMavenReport {
     protected Renderer getSiteRenderer() {
         return siteRenderer;
     }
-
-    public String getDescription(Locale arg0) {
+    
+    /**
+     * Describes the report.
+     */
+    public String getDescription(Locale locale) {
         return "SchemaSpy database documentation";
     }
 
-    public String getName(Locale arg0) {
+    /**
+     * Not really sure what this does ;-).
+     */
+    public String getName(Locale locale) {
         return "SchemaSpy";
     }
 

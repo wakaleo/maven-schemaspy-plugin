@@ -97,6 +97,6 @@ but it keeps crashing on me.
 
  * SchemaSpy reports are cool, but I don't like the colors. Can I change them?
 
- Sure. Just use the  <<<\<cssStylesheet\>>>> configuration option to . The default one 
+ Sure. Just use the  <<<\<cssStylesheet\>>>> configuration option. The default one 
  is called schemaSpy.css, and can be found bundled in the plugin JAR (in the resources 
  directory). You can also check it out online in the Subversion repository.

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+    Checkstyle-Configuration: schemaspy-checkstyle
+    Description: none
+-->
+<module name="Checker">
+  <property name="severity" value="warning"/>
+  <module name="TreeWalker">
+    <module name="JavadocMethod">
+      <property name="scope" value="public"/>
+      <property name="allowUndeclaredRTE" value="true"/>
+      <property name="allowThrowsTagsForSubclasses" value="true"/>
+      <property name="allowMissingParamTags" value="true"/>
+      <property name="allowMissingThrowsTags" value="true"/>
+      <property name="allowMissingReturnTag" value="true"/>
+      <property name="allowMissingPropertyJavadoc" value="true"/>
+    </module>
+    <module name="JavadocStyle">
+      <property name="checkEmptyJavadoc" value="true"/>
+      <property name="checkHtml" value="false"/>
+    </module>
+    <module name="JavadocType">
+      <property name="scope" value="public"/>
+    </module>
+    <module name="JavadocVariable"/>
+    <module name="ConstantName"/>
+    <module name="MemberName"/>
+    <module name="ModifierOrder"/>
+    <module name="TodoComment"/>
+    <module name="FinalClass"/>
+    <module name="HideUtilityClassConstructor"/>
+    <module name="InterfaceIsType"/>
+    <module name="CovariantEquals"/>
+    <module name="DefaultComesLast"/>
+    <module name="DoubleCheckedLocking"/>
+    <module name="EqualsHashCode">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="FallThrough"/>
+    <module name="MultipleVariableDeclarations"/>
+  </module>
+</module>
