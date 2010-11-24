@@ -1,5 +1,6 @@
 *.log
 .classpath
+.checkstyle
 .project
 .settings
 target
