@@ -1,16 +1,41 @@
+/*
+ * This file is a part of the SchemaSpy project (http://schemaspy.sourceforge.net).
+ * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 John Currier
+ *
+ * SchemaSpy is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SchemaSpy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package net.sourceforge.schemaspy.model;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class TableIndex implements Comparable {
+public class TableIndex implements Comparable<TableIndex> {
     private final String name;
     private final boolean isUnique;
     private Object id;
     private boolean isPrimary;
-    private final List columns = new ArrayList();
-    private final List columnsAscending = new ArrayList(); // Booleans for whether colums are ascending order
+    private final List<TableColumn> columns = new ArrayList<TableColumn>();
+    private final List<Boolean> columnsAscending = new ArrayList<Boolean>(); // for whether colums are ascending order
 
+    /**
+     * @param rs
+     * @throws java.sql.SQLException
+     */
     public TableIndex(ResultSet rs) throws SQLException {
         name = rs.getString("INDEX_NAME");
         isUnique = !rs.getBoolean("NON_UNIQUE");
@@ -35,6 +60,9 @@ public class TableIndex implements Comparable {
         }
     }
 
+    /**
+     * @return
+     */
     public String getType() {
         if (isPrimaryKey())
             return "Primary key";
@@ -43,31 +71,42 @@ public class TableIndex implements Comparable {
         return "Performance";
     }
 
+    /**
+     * @return
+     */
     public boolean isPrimaryKey() {
         return isPrimary;
     }
 
+    /**
+     * @param isPrimaryKey
+     */
     public void setIsPrimaryKey(boolean isPrimaryKey) {
         isPrimary = isPrimaryKey;
     }
 
+    /**
+     * @return
+     */
     public boolean isUnique() {
         return isUnique;
     }
 
+    /**
+     * @return
+     */
     public String getColumnsAsString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
-        Iterator iter = columns.iterator();
-        while (iter.hasNext()) {
+        for (TableColumn column : columns) {
             if (buf.length() > 0)
                 buf.append(" + ");
-            buf.append(iter.next());
+            buf.append(column);
         }
         return buf.toString();
     }
 
-    public List getColumns() {
+    public List<TableColumn> getColumns() {
         return Collections.unmodifiableList(columns);
     }
 
@@ -83,28 +122,39 @@ public class TableIndex implements Comparable {
         // if all of the columns specified by the Unique Index are nullable
         // then return true, otherwise false
         boolean allNullable = true;
-        for (Iterator iter = getColumns().iterator(); iter.hasNext() && allNullable; ) {
-            TableColumn column = (TableColumn)iter.next();
+        for (TableColumn column : getColumns()) {
             allNullable = column != null && column.isNullable();
+            if (!allNullable)
+                break;
         }
 
         return allNullable;
     }
 
+    /**
+     * @param column
+     * @return
+     */
     public boolean isAscending(TableColumn column) {
-        return ((Boolean)columnsAscending.get(columns.indexOf(column))).booleanValue();
+        return columnsAscending.get(columns.indexOf(column)).booleanValue();
     }
 
-    public int compareTo(Object object) {
-        TableIndex other = (TableIndex)object;
+    /**
+     * @param object
+     * @return
+     */
+    public int compareTo(TableIndex other) {
         if (isPrimaryKey() && !other.isPrimaryKey())
             return -1;
         if (!isPrimaryKey() && other.isPrimaryKey())
             return 1;
-        if (getId() == null)
-            return getName().compareTo(other.getName());
-        if (getId() instanceof Number)
-            return ((Number)getId()).intValue() - ((Number)other.getId()).intValue();
-        return getId().toString().compareTo(other.getId().toString());
+
+        Object thisId = getId();
+        Object otherId = other.getId();
+        if (thisId == null || otherId == null)
+            return getName().compareToIgnoreCase(other.getName());
+        if (thisId instanceof Number)
+            return ((Number)thisId).intValue() - ((Number)otherId).intValue();
+        return thisId.toString().compareToIgnoreCase(otherId.toString());
     }
 }

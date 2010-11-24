@@ -1,25 +1,64 @@
+/*
+ * This file is a part of the SchemaSpy project (http://schemaspy.sourceforge.net).
+ * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 John Currier
+ *
+ * SchemaSpy is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SchemaSpy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package net.sourceforge.schemaspy.view;
 
-import java.io.*;
-import java.util.*;
-import net.sourceforge.schemaspy.*;
-import net.sourceforge.schemaspy.model.*;
-import net.sourceforge.schemaspy.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import net.sourceforge.schemaspy.DbAnalyzer;
+import net.sourceforge.schemaspy.model.Database;
+import net.sourceforge.schemaspy.model.ForeignKeyConstraint;
+import net.sourceforge.schemaspy.model.Table;
+import net.sourceforge.schemaspy.model.TableColumn;
+import net.sourceforge.schemaspy.util.HtmlEncoder;
+import net.sourceforge.schemaspy.util.LineWriter;
 
+/**
+ * The page that lists all of the constraints in the schema
+ *
+ * @author John Currier
+ */
 public class HtmlConstraintsPage extends HtmlFormatter {
     private static HtmlConstraintsPage instance = new HtmlConstraintsPage();
+    private int columnCounter;
 
     /**
-     * Singleton - prevent creation
+     * Singleton: Don't allow instantiation
      */
     private HtmlConstraintsPage() {
     }
 
+    /**
+     * Singleton accessor
+     *
+     * @return the singleton instance
+     */
     public static HtmlConstraintsPage getInstance() {
         return instance;
     }
 
-    public void write(Database database, List constraints, Collection tables, boolean hasOrphans, LineWriter html) throws IOException {
+    public void write(Database database, List<ForeignKeyConstraint> constraints, Collection<Table> tables, boolean hasOrphans, LineWriter html) throws IOException {
         writeHeader(database, hasOrphans, html);
         writeForeignKeyConstraints(constraints, html);
         writeCheckConstraints(tables, html);
@@ -31,6 +70,7 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         html.writeln("<div class='indent'>");
     }
 
+    @Override
     protected void writeFooter(LineWriter html) throws IOException {
         html.writeln("</div>");
         super.writeFooter(html);
@@ -43,12 +83,8 @@ public class HtmlConstraintsPage extends HtmlFormatter {
      * @param html LineWriter
      * @throws IOException
      */
-    private void writeForeignKeyConstraints(List constraints, LineWriter html) throws IOException {
-        Set constraintsByName = new TreeSet(new Comparator() {
-            public int compare(Object object1, Object object2) {
-                return ((ForeignKeyConstraint)object1).getName().compareTo(((ForeignKeyConstraint)object2).getName());
-            }
-        });
+    private void writeForeignKeyConstraints(List<ForeignKeyConstraint> constraints, LineWriter html) throws IOException {
+        Set<ForeignKeyConstraint> constraintsByName = new TreeSet<ForeignKeyConstraint>();
         constraintsByName.addAll(constraints);
 
         html.writeln("<table width='100%'>");
@@ -63,8 +99,9 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         writeFeedMe(html);
         html.writeln("</td></tr></table>");
         html.writeln("</td></tr>");
-        html.writeln("</table><br/>");
+        html.writeln("</table><br>");
         html.writeln("<table class='dataTable' border='1' rules='groups'>");
+        html.writeln("<colgroup>");
         html.writeln("<colgroup>");
         html.writeln("<colgroup>");
         html.writeln("<colgroup>");
@@ -73,15 +110,16 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         html.writeln("  <th>Constraint Name</th>");
         html.writeln("  <th>Child Column</th>");
         html.writeln("  <th>Parent Column</th>");
+        html.writeln("  <th>Delete Rule</th>");
         html.writeln("</tr>");
         html.writeln("</thead>");
         html.writeln("<tbody>");
-        for (Iterator iter = constraintsByName.iterator(); iter.hasNext(); ) {
-            writeForeignKeyConstraint((ForeignKeyConstraint)iter.next(), html);
+        for (ForeignKeyConstraint constraint : constraintsByName) {
+            writeForeignKeyConstraint(constraint, html);
         }
         if (constraints.size() == 0) {
             html.writeln(" <tr>");
-            html.writeln("  <td class='detail' valign='top' colspan='3'>None detected</td>");
+            html.writeln("  <td class='detail' valign='top' colspan='4'>None detected</td>");
             html.writeln(" </tr>");
         }
         html.writeln("</tbody>");
@@ -96,13 +134,17 @@ public class HtmlConstraintsPage extends HtmlFormatter {
      * @throws IOException
      */
     private void writeForeignKeyConstraint(ForeignKeyConstraint constraint, LineWriter html) throws IOException {
-        html.writeln(" <tr>");
+        boolean even = columnCounter++ % 2 == 0;
+        if (even)
+            html.writeln("  <tr class='even'>");
+        else
+            html.writeln("  <tr class='odd'>");
         html.write("  <td class='detail'>");
         html.write(constraint.getName());
         html.writeln("</td>");
         html.write("  <td class='detail'>");
-        for (Iterator iter = constraint.getChildColumns().iterator(); iter.hasNext(); ) {
-            TableColumn column = (TableColumn)iter.next();
+        for (Iterator<TableColumn> iter = constraint.getChildColumns().iterator(); iter.hasNext(); ) {
+            TableColumn column = iter.next();
             html.write("<a href='tables/");
             html.write(column.getTable().getName());
             html.write(".html'>");
@@ -115,8 +157,8 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         }
         html.writeln("</td>");
         html.write("  <td class='detail'>");
-        for (Iterator iter = constraint.getParentColumns().iterator(); iter.hasNext(); ) {
-            TableColumn column = (TableColumn)iter.next();
+        for (Iterator<TableColumn> iter = constraint.getParentColumns().iterator(); iter.hasNext(); ) {
+            TableColumn column = iter.next();
             html.write("<a href='tables/");
             html.write(column.getTable().getName());
             html.write(".html'>");
@@ -127,6 +169,11 @@ public class HtmlConstraintsPage extends HtmlFormatter {
             if (iter.hasNext())
                 html.write("<br>");
         }
+        html.writeln("</td>");
+        html.write("  <td class='detail'>");
+        String ruleText = constraint.getDeleteRuleDescription();
+        String ruleName = constraint.getDeleteRuleName();
+        html.write("<span title='" + ruleText + "'>" + ruleName + "&nbsp;</span>");
         html.writeln("</td>");
         html.writeln(" </tr>");
     }
@@ -138,8 +185,8 @@ public class HtmlConstraintsPage extends HtmlFormatter {
      * @param html LineWriter
      * @throws IOException
      */
-    public void writeCheckConstraints(Collection tables, LineWriter html) throws IOException {
-        html.writeln("<a name='checkConstraints'></a><p/>");
+    public void writeCheckConstraints(Collection<Table> tables, LineWriter html) throws IOException {
+        html.writeln("<a name='checkConstraints'></a><p>");
         html.writeln("<b>Check Constraints:</b>");
         html.writeln("<TABLE class='dataTable' border='1' rules='groups'>");
         html.writeln("<colgroup>");
@@ -154,13 +201,12 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         html.writeln("</thead>");
         html.writeln("<tbody>");
 
-        List tablesByName = DBAnalyzer.sortTablesByName(new ArrayList(tables));
+        List<Table> tablesByName = DbAnalyzer.sortTablesByName(new ArrayList<Table>(tables));
 
         int constraintsWritten = 0;
 
         // iter over all tables...only ones with check constraints will write anything
-        for (Iterator iter = tablesByName.iterator(); iter.hasNext(); ) {
-            Table table = (Table)iter.next();
+        for (Table table : tablesByName) {
             constraintsWritten += writeCheckConstraints(table, html);
         }
 
@@ -183,10 +229,9 @@ public class HtmlConstraintsPage extends HtmlFormatter {
      * @return int
      */
     private int writeCheckConstraints(Table table, LineWriter html) throws IOException {
-        Map constraints = table.getCheckConstraints();  // constraint name -> text pairs
+        Map<String, String> constraints = table.getCheckConstraints();  // constraint name -> text pairs
         int constraintsWritten = 0;
-        for (Iterator iter = constraints.keySet().iterator(); iter.hasNext(); ) {
-            String name = iter.next().toString();
+        for (String name : constraints.keySet()) {
             html.writeln(" <tr>");
             html.write("  <td class='detail' valign='top'><a href='tables/");
             html.write(table.getName());
@@ -197,7 +242,7 @@ public class HtmlConstraintsPage extends HtmlFormatter {
             html.write(name);
             html.writeln("</td>");
             html.write("  <td class='detail'>");
-            html.write(constraints.get(name).toString());
+            html.write(HtmlEncoder.encodeString(constraints.get(name).toString()));
             html.writeln("</td>");
             html.writeln(" </tr>");
             ++constraintsWritten;
@@ -206,6 +251,7 @@ public class HtmlConstraintsPage extends HtmlFormatter {
         return constraintsWritten;
     }
 
+    @Override
     protected boolean isConstraintsPage() {
         return true;
     }

@@ -1,14 +1,14 @@
-/* required colors MUST be specified in RGB hex notation or the graphs won't have correct colors */
+/* required colors MUST be specified in RGB hex notation or the diagrams won't have correct colors */
 
 body  {
   color: #000;
   background-color: #F7F7F7;
-  font-family: arial, geneva, helvetica, sans-serif;
+  font-family: arial, geneva, helvetica, lucida, sans-serif;
   margin: 0 0 0 0;
   padding: 0px;
 }
 
-/* background must be specified for it to propagate into graphs */
+/* background must be specified for it to propagate into diagrams */
 .content {
   margin: 0px;
   background: #F7F7F7;
@@ -16,41 +16,48 @@ body  {
   padding:.4em;
 }
 
-/* background-color must be specified for th to propagate into graphs */
+/* background-color must be specified for th to propagate into diagrams */
 th {
   background-color: #9BAB96;
   text-align: left;
   padding: 0px 4px;
 }
 
-/* background-color must be specified for td to propagate into graphs */
+/* background-color must be specified for td to propagate into diagrams */
 td {
   background-color: #ffffff;
+}
+
+tr.even td.detail {
+}
+
+tr.odd td.detail {
+  background-color: #F7F7F7;
 }
 
 h1 {
   font-size: 125%;
 }
 
-/* background must be specified for .primaryKey to propagate into graphs */
+/* background must be specified for .primaryKey to propagate into diagrams */
 .primaryKey {
   background: #BED1B8;
   padding: 0px 4px;
 }
 
-/* background must be specified for .indexedColumn to propagate into graphs */
+/* background must be specified for .indexedColumn to propagate into diagrams */
 .indexedColumn {
   background: #F4F7DA;
   padding: 0px 4px;
 }
 
-/* background must be specified for .excludedColumn to propagate into graphs */
+/* background must be specified for .excludedColumn to propagate into diagrams */
 .excludedColumn {
   background: #C0C0C0;
   padding: 0px 4px;
 }
 
-/* background must be specified for .selectedTable to propagate into graphs */
+/* background must be specified for .selectedTable to propagate into diagrams */
 .selectedTable {
   background: #A9AB96;
 }
@@ -105,6 +112,7 @@ table {
 }
 
 .legend {
+  display: none;
   text-align: left;
 }
 
@@ -145,6 +153,11 @@ table {
 }
 
 .degrees {
+}
+
+/* don't display the diagrams until we know what to display */
+.diagram {
+  display: none;
 }
 
 .indent {

@@ -37,7 +37,8 @@ under the License.
               <outputDirectory>target/reports/test</outputDirectory>
               <databaseType>derby</databaseType>
               <database>testdb</database>
-              <!--<outputDirectory>target/reports/schemaSpy</outputDirectory>-->
+              <singleSignOn>true</singleSignOn>
+              <noSchema>true</noSchema>
             </configuration>
         </plugin> 
     </plugins>

@@ -36,7 +36,9 @@ under the License.
             <configuration>
               <outputDirectory>target/reports/jdbcurl-test</outputDirectory>
               <database>testdb</database>     
-              <jdbcUrl>jdbc:derby:testdb</jdbcUrl>     
+              <jdbcUrl>jdbc:derby:testdb</jdbcUrl>   
+              <singleSignOn>true</singleSignOn>
+              <noSchema>true</noSchema>
             </configuration>
         </plugin> 
     </plugins>

@@ -1,8 +1,28 @@
+/*
+ * This file is a part of the SchemaSpy project (http://schemaspy.sourceforge.net).
+ * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 John Currier
+ *
+ * SchemaSpy is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SchemaSpy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package net.sourceforge.schemaspy.view;
 
-import java.util.*;
-import java.util.regex.*;
-import net.sourceforge.schemaspy.model.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import net.sourceforge.schemaspy.model.Table;
+import net.sourceforge.schemaspy.model.TableColumn;
 
 /**
  * Simple ugly hack that provides details of what was written.
@@ -10,20 +30,22 @@ import net.sourceforge.schemaspy.model.*;
 public class WriteStats {
     private int numTables;
     private int numViews;
-    private boolean includeImplied;
-    private boolean wroteImplied;
-    private boolean wroteTwoDegrees;
-    private Pattern exclusionPattern;
-    private final Set excludedColumns = new HashSet();
+    private final Set<TableColumn> excludedColumns;
 
-    public WriteStats(Pattern exclusionPattern, boolean includeImplied) {
-        this.exclusionPattern = exclusionPattern;
-        this.includeImplied = includeImplied;
+    public WriteStats(Collection<Table> tables) {
+        excludedColumns = new HashSet<TableColumn>();
+
+        for (Table table : tables) {
+            for (TableColumn column : table.getColumns()) {
+                if (column.isExcluded()) {
+                    excludedColumns.add(column);
+                }
+            }
+        }
     }
 
     public WriteStats(WriteStats stats) {
-        this.exclusionPattern = stats.exclusionPattern;
-        this.includeImplied = stats.includeImplied;
+        excludedColumns = stats.excludedColumns;
     }
 
     public void wroteTable(Table table) {
@@ -31,14 +53,6 @@ public class WriteStats {
             ++numViews;
         else
             ++numTables;
-    }
-
-    public void setWroteImplied(boolean wroteImplied) {
-        this.wroteImplied = wroteImplied;
-    }
-
-    public void setWroteTwoDegrees(boolean wroteFocused) {
-        this.wroteTwoDegrees = wroteFocused;
     }
 
     public int getNumTablesWritten() {
@@ -49,50 +63,7 @@ public class WriteStats {
         return numViews;
     }
 
-    public boolean includeImplied() {
-        return includeImplied;
-    }
-
-    public boolean wroteImplied() {
-        return wroteImplied;
-    }
-
-    public boolean wroteTwoDegrees() {
-        return wroteTwoDegrees;
-    }
-
-    public void addExcludedColumn(TableColumn column) {
-        excludedColumns.add(column);
-    }
-
-    public Set getExcludedColumns() {
+    public Set<TableColumn> getExcludedColumns() {
         return excludedColumns;
-    }
-
-    public Pattern getExclusionPattern() {
-        return exclusionPattern;
-    }
-
-    /**
-     * setIncludeImplied
-     *
-     * @param includeImplied boolean
-     */
-    public boolean setIncludeImplied(boolean includeImplied) {
-        boolean oldValue = this.includeImplied;
-        this.includeImplied = includeImplied;
-        return oldValue;
-    }
-
-    /**
-     * setExclusionPattern
-     *
-     * @param exclusionPattern Pattern
-     * @return Pattern
-     */
-    public Pattern setExclusionPattern(Pattern exclusionPattern) {
-        Pattern orig = this.exclusionPattern;
-        this.exclusionPattern = exclusionPattern;
-        return orig;
     }
 }

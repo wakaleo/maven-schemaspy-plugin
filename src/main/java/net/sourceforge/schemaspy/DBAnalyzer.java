@@ -1,20 +1,57 @@
+/*
+ * This file is a part of the SchemaSpy project (http://schemaspy.sourceforge.net).
+ * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 John Currier
+ *
+ * SchemaSpy is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SchemaSpy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package net.sourceforge.schemaspy;
 
-import java.sql.*;
-import java.util.*;
-import java.util.regex.*;
-import net.sourceforge.schemaspy.model.*;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import net.sourceforge.schemaspy.model.ForeignKeyConstraint;
+import net.sourceforge.schemaspy.model.ImpliedForeignKeyConstraint;
+import net.sourceforge.schemaspy.model.RailsForeignKeyConstraint;
+import net.sourceforge.schemaspy.model.Table;
+import net.sourceforge.schemaspy.model.TableColumn;
+import net.sourceforge.schemaspy.model.TableIndex;
+import net.sourceforge.schemaspy.util.Inflection;
 
-public class DBAnalyzer {
-    public static List getImpliedConstraints(Collection tables) throws SQLException {
-        List columnsWithoutParents = new ArrayList();
-        Map allPrimaries = new TreeMap(new Comparator() {
-            public int compare(Object object1, Object object2) {
-                TableColumn column1 = (TableColumn)object1;
-                TableColumn column2 = (TableColumn)object2;
-                int rc = column1.getName().compareTo(column2.getName());
+public class DbAnalyzer {
+    public static List<ImpliedForeignKeyConstraint> getImpliedConstraints(Collection<Table> tables) {
+        List<TableColumn> columnsWithoutParents = new ArrayList<TableColumn>();
+        Map<TableColumn, Table> allPrimaries = new TreeMap<TableColumn, Table>(new Comparator<TableColumn>() {
+            public int compare(TableColumn column1, TableColumn column2) {
+                int rc = column1.getName().compareToIgnoreCase(column2.getName());
                 if (rc == 0)
-                    rc = column1.getType().compareTo(column2.getType());
+                    rc = column1.getType().compareToIgnoreCase(column2.getType());
                 if (rc == 0)
                     rc = column1.getLength() - column2.getLength();
                 return rc;
@@ -24,35 +61,33 @@ public class DBAnalyzer {
         int duplicatePrimaries = 0;
 
         // gather all the primary key columns and columns without parents
-        for (Iterator iter = tables.iterator(); iter.hasNext(); ) {
-            Table table = (Table)iter.next();
-            List tablePrimaries = table.getPrimaryColumns();
+        for (Table table : tables) {
+            List<TableColumn> tablePrimaries = table.getPrimaryColumns();
             if (tablePrimaries.size() == 1) { // can't match up multiples...yet...
-                for (Iterator primariesIter = tablePrimaries.iterator(); primariesIter.hasNext(); ) {
-                    if (allPrimaries.put(primariesIter.next(), table) != null)
+                for (TableColumn primary : tablePrimaries) {
+                    if (primary.allowsImpliedChildren() &&
+                        allPrimaries.put(primary, table) != null)
                         ++duplicatePrimaries;
                 }
             }
 
-            for (Iterator columnIter = table.getColumns().iterator(); columnIter.hasNext(); ) {
-                TableColumn column = (TableColumn)columnIter.next();
-                if (column.getParents().isEmpty())
+            for (TableColumn column : table.getColumns()) {
+                if (!column.isForeignKey() && column.allowsImpliedParents())
                     columnsWithoutParents.add(column);
             }
         }
 
         // if more than half of the tables have the same primary key then
-        // it's most likey a database where primary key names aren't unique
+        // it's most likely a database where primary key names aren't unique
         // (e.g. they all have a primary key named 'ID')
         if (duplicatePrimaries > allPrimaries.size()) // bizarre logic, but it does approximately what we need
-            return new ArrayList();
+            return new ArrayList<ImpliedForeignKeyConstraint>();
 
         sortColumnsByTable(columnsWithoutParents);
 
-        List impliedConstraints = new ArrayList();
-        for (Iterator iter = columnsWithoutParents.iterator(); iter.hasNext(); ) {
-            TableColumn childColumn = (TableColumn)iter.next();
-            Table primaryTable = (Table)allPrimaries.get(childColumn);
+        List<ImpliedForeignKeyConstraint> impliedConstraints = new ArrayList<ImpliedForeignKeyConstraint>();
+        for (TableColumn childColumn : columnsWithoutParents) {
+            Table primaryTable = allPrimaries.get(childColumn);
             if (primaryTable != null && primaryTable != childColumn.getTable()) {
                 TableColumn parentColumn = primaryTable.getColumn(childColumn.getName());
                 // make sure the potential child->parent relationships isn't already a
@@ -69,29 +104,67 @@ public class DBAnalyzer {
     }
 
     /**
+     * Ruby on Rails-based databases typically have no real referential integrity
+     * constraints.  Instead they have a somewhat unusual way of associating
+     * columns to primary keys.<p>
+     *
+     * Basically all tables have a primary key named <code>ID</code>.
+     * All tables are named plural names.
+     * The columns that logically reference that <code>ID</code> are the singular
+     * form of the table name suffixed with <code>_ID</code>.<p>
+     *
+     * A side-effect of calling this method is that the returned collection of
+     * constraints will be "tied into" the associated tables.
+     *
+     * @param tables
+     * @return List of {@link RailsForeignKeyConstraint}s
+     */
+    public static List<RailsForeignKeyConstraint> getRailsConstraints(Map<String, Table> tables) {
+        List<RailsForeignKeyConstraint> railsConstraints = new ArrayList<RailsForeignKeyConstraint>(tables.size());
+
+        // iterate thru each column in each table looking for columns that
+        // match Rails naming conventions
+        for (Table table : tables.values()) {
+            for (TableColumn column : table.getColumns()) {
+            	String columnName = column.getName().toLowerCase();
+                if (!column.isForeignKey() && column.allowsImpliedParents() && columnName.endsWith("_id")) {
+                    String singular = columnName.substring(0, columnName.length() - 3);
+                    String primaryTableName = Inflection.pluralize(singular);
+                    Table primaryTable = tables.get(primaryTableName);
+                    if (primaryTable != null) {
+                        TableColumn primaryColumn = primaryTable.getColumn("ID");
+                        if (primaryColumn != null) {
+                            railsConstraints.add(new RailsForeignKeyConstraint(primaryColumn, column));
+                        }
+                    }
+                }
+            }
+        }
+
+        return railsConstraints;
+    }
+
+    /**
      * Returns a <code>List</code> of all of the <code>ForeignKeyConstraint</code>s
      * used by the specified tables.
      *
      * @param tables Collection
      * @return List
      */
-    public static List getForeignKeyConstraints(Collection tables) {
-        List constraints = new ArrayList();
-        Iterator iter = tables.iterator();
-        while (iter.hasNext()) {
-            Table table = (Table)iter.next();
+    public static List<ForeignKeyConstraint> getForeignKeyConstraints(Collection<Table> tables) {
+        List<ForeignKeyConstraint> constraints = new ArrayList<ForeignKeyConstraint>();
+
+        for (Table table : tables) {
             constraints.addAll(table.getForeignKeys());
         }
 
         return constraints;
     }
 
-    public static List getOrphans(Collection tables) {
-        List orphans = new ArrayList();
+    public static List<Table> getOrphans(Collection<Table> tables) {
+        List<Table> orphans = new ArrayList<Table>();
 
-        Iterator iter = tables.iterator();
-        while (iter.hasNext()) {
-            Table table = (Table)iter.next();
+        for (Table table : tables) {
             if (table.isOrphan(false)) {
                 orphans.add(table);
             }
@@ -104,13 +177,11 @@ public class DBAnalyzer {
      * Return a list of <code>TableColumn</code>s that are both nullable
      * and have an index that specifies that they must be unique (a rather strange combo).
      */
-    public static List getMustBeUniqueNullableColumns(Collection tables) {
-        List uniqueNullables = new ArrayList();
+    public static List<TableColumn> getMustBeUniqueNullableColumns(Collection<Table> tables) {
+        List<TableColumn> uniqueNullables = new ArrayList<TableColumn>();
 
-        for (Iterator tablesIter = tables.iterator(); tablesIter.hasNext(); ) {
-            Table table = (Table)tablesIter.next();
-            for (Iterator indexesIter = table.getIndexes().iterator(); indexesIter.hasNext(); ) {
-                TableIndex index = (TableIndex)indexesIter.next();
+        for (Table table : tables) {
+            for (TableIndex index : table.getIndexes()) {
                 if (index.isUniqueNullable()) {
                     uniqueNullables.addAll(index.getColumns());
                 }
@@ -123,11 +194,10 @@ public class DBAnalyzer {
     /**
      * Return a list of <code>Table</code>s that have neither an index nor a primary key.
      */
-    public static List getTablesWithoutIndexes(Collection tables) {
-        List withoutIndexes = new ArrayList();
+    public static List<Table> getTablesWithoutIndexes(Collection<Table> tables) {
+        List<Table> withoutIndexes = new ArrayList<Table>();
 
-        for (Iterator tablesIter = tables.iterator(); tablesIter.hasNext(); ) {
-            Table table = (Table)tablesIter.next();
+        for (Table table : tables) {
             if (!table.isView() && table.getIndexes().size() == 0)
                 withoutIndexes.add(table);
         }
@@ -135,19 +205,15 @@ public class DBAnalyzer {
         return sortTablesByName(withoutIndexes);
     }
 
-    public static List getTablesWithIncrementingColumnNames(Collection tables) {
-        List denormalizedTables = new ArrayList();
+    public static List<Table> getTablesWithIncrementingColumnNames(Collection<Table> tables) {
+        List<Table> denormalizedTables = new ArrayList<Table>();
 
-        Iterator tableIter = tables.iterator();
-        while (tableIter.hasNext()) {
-            Table table = (Table)tableIter.next();
-            Map columnPrefixes = new HashMap();
+        for (Table table : tables) {
+            Map<String, Long> columnPrefixes = new HashMap<String, Long>();
 
-            Iterator columnIter = table.getColumns().iterator();
-            while (columnIter.hasNext()) {
+            for (TableColumn column : table.getColumns()) {
                 // search for columns that start with the same prefix
                 // and end in an incrementing number
-                TableColumn column = (TableColumn)columnIter.next();
 
                 String columnName = column.getName();
                 String numbers = null;
@@ -170,7 +236,7 @@ public class DBAnalyzer {
                 // that had a numeric suffix +/- 1.
                 String prefix = columnName.substring(0, columnName.length() - numbers.length());
                 long numeric = Long.parseLong(numbers);
-                Long existing = (Long)columnPrefixes.get(prefix);
+                Long existing = columnPrefixes.get(prefix);
                 if (existing != null && Math.abs(existing.longValue() - numeric) == 1) {
                     // found one so add it to our list and stop evaluating this table
                     denormalizedTables.add(table);
@@ -183,12 +249,10 @@ public class DBAnalyzer {
         return sortTablesByName(denormalizedTables);
     }
 
-    public static List getTablesWithOneColumn(Collection tables) {
-        List singleColumnTables = new ArrayList();
+    public static List<Table> getTablesWithOneColumn(Collection<Table> tables) {
+        List<Table> singleColumnTables = new ArrayList<Table>();
 
-        Iterator iter = tables.iterator();
-        while (iter.hasNext()) {
-            Table table = (Table)iter.next();
+        for (Table table : tables) {
             if (table.getColumns().size() == 1)
                 singleColumnTables.add(table);
         }
@@ -196,24 +260,22 @@ public class DBAnalyzer {
         return sortTablesByName(singleColumnTables);
     }
 
-    public static List sortTablesByName(List tables) {
-        Collections.sort(tables, new Comparator() {
-            public int compare(Object object1, Object object2) {
-                return ((Table)object1).getName().compareTo(((Table)object2).getName());
+    public static List<Table> sortTablesByName(List<Table> tables) {
+        Collections.sort(tables, new Comparator<Table>() {
+            public int compare(Table table1, Table table2) {
+                return table1.compareTo(table2);
             }
         });
 
         return tables;
     }
 
-    public static List sortColumnsByTable(List columns) {
-        Collections.sort(columns, new Comparator() {
-            public int compare(Object object1, Object object2) {
-                TableColumn column1 = (TableColumn)object1;
-                TableColumn column2 = (TableColumn)object2;
-                int rc = column1.getTable().getName().compareTo(column2.getTable().getName());
+    public static List<TableColumn> sortColumnsByTable(List<TableColumn> columns) {
+        Collections.sort(columns, new Comparator<TableColumn>() {
+            public int compare(TableColumn column1, TableColumn column2) {
+                int rc = column1.getTable().compareTo(column2.getTable());
                 if (rc == 0)
-                    rc = column1.getName().compareTo(column2.getName());
+                    rc = column1.getName().compareToIgnoreCase(column2.getName());
                 return rc;
             }
         });
@@ -228,13 +290,11 @@ public class DBAnalyzer {
      * @param tables Collection
      * @return List
      */
-    public static List getDefaultNullStringColumns(Collection tables) {
-        List defaultNullStringColumns = new ArrayList();
+    public static List<TableColumn> getDefaultNullStringColumns(Collection<Table> tables) {
+        List<TableColumn> defaultNullStringColumns = new ArrayList<TableColumn>();
 
-        for (Iterator tablesIter = tables.iterator(); tablesIter.hasNext(); ) {
-            Table table = (Table)tablesIter.next();
-            for (Iterator columnsIter = table.getColumns().iterator(); columnsIter.hasNext(); ) {
-                TableColumn column = (TableColumn)columnsIter.next();
+        for (Table table : tables) {
+            for (TableColumn column : table.getColumns()) {
                 Object defaultValue = column.getDefaultValue();
                 if (defaultValue != null && defaultValue instanceof String) {
                     String defaultString = defaultValue.toString();
@@ -253,8 +313,8 @@ public class DBAnalyzer {
      *
      * @param meta DatabaseMetaData
      */
-    public static List getSchemas(DatabaseMetaData meta) throws SQLException {
-        List schemas = new ArrayList();
+    public static List<String> getSchemas(DatabaseMetaData meta) throws SQLException {
+        List<String> schemas = new ArrayList<String>();
 
         ResultSet rs = meta.getSchemas();
         while (rs.next()) {
@@ -270,7 +330,7 @@ public class DBAnalyzer {
      *
      * @param meta DatabaseMetaData
      */
-    public static List getPopulatedSchemas(DatabaseMetaData meta) throws SQLException {
+    public static List<String> getPopulatedSchemas(DatabaseMetaData meta) throws SQLException {
         return getPopulatedSchemas(meta, ".*");
     }
 
@@ -280,28 +340,42 @@ public class DBAnalyzer {
      *
      * @param meta DatabaseMetaData
      */
-    public static List getPopulatedSchemas(DatabaseMetaData meta, String schemaSpec) throws SQLException {
-        Set schemas = new TreeSet(); // alpha sorted
+    public static List<String> getPopulatedSchemas(DatabaseMetaData meta, String schemaSpec) throws SQLException {
+        Set<String> schemas = new TreeSet<String>(); // alpha sorted
         Pattern schemaRegex = Pattern.compile(schemaSpec);
+        Logger logger = Logger.getLogger(DbAnalyzer.class.getName());
+        boolean logging = logger.isLoggable(Level.FINE);
 
-        Iterator iter = getSchemas(meta).iterator();
+        Iterator<String> iter = getSchemas(meta).iterator();
         while (iter.hasNext()) {
             String schema = iter.next().toString();
             if (schemaRegex.matcher(schema).matches()) {
                 ResultSet rs = null;
                 try {
                     rs = meta.getTables(null, schema, "%", null);
-                    if (rs.next())
+                    if (rs.next()) {
+                        if (logging)
+                            logger.fine("Including schema " + schema +
+                                        ": matches + \"" + schemaRegex + "\" and contains tables");
                         schemas.add(schema);
+                    } else {
+                        if (logging)
+                            logger.fine("Excluding schema " + schema +
+                                        ": matches \"" + schemaRegex + "\" but contains no tables");
+                    }
                 } catch (SQLException ignore) {
                 } finally {
                     if (rs != null)
                         rs.close();
                 }
+            } else {
+                if (logging)
+                    logger.fine("Excluding schema " + schema +
+                                ": doesn't match \"" + schemaRegex + '"');
             }
         }
 
-        return new ArrayList(schemas);
+        return new ArrayList<String>(schemas);
     }
 
     /**

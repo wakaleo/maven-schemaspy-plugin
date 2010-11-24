@@ -1,11 +1,31 @@
+/*
+ * This file is a part of the SchemaSpy project (http://schemaspy.sourceforge.net).
+ * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 John Currier
+ *
+ * SchemaSpy is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SchemaSpy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package net.sourceforge.schemaspy.view;
 
-import java.io.*;
-import java.util.*;
-import net.sourceforge.schemaspy.model.*;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import net.sourceforge.schemaspy.model.Table;
+import net.sourceforge.schemaspy.model.TableColumn;
 
 /**
- * Format table data into .dot format to feed to GraphVis' dot program.
+ * Format table data into .dot format to feed to Graphvis' dot program.
  *
  * @author John Currier
  */
@@ -26,14 +46,13 @@ public class DotConnectorFinder {
      *
      * @param table Table
      * @throws IOException
-     * @return Set of <code>dot</code> relationships (as <code>DotEdge</code>s)
+     * @return Set of <code>dot</code> relationships (as {@link DotConnector}s)
      */
-    public Set getRelatedConnectors(Table table, WriteStats stats) {
-        Set relationships = new HashSet();
+    public Set<DotConnector> getRelatedConnectors(Table table, boolean includeImplied) {
+        Set<DotConnector> relationships = new HashSet<DotConnector>();
 
-        Iterator iter = table.getColumns().iterator();
-        while (iter.hasNext()) {
-            relationships.addAll(getRelatedConnectors((TableColumn)iter.next(), null, stats));
+        for (TableColumn column : table.getColumns()) {
+            relationships.addAll(getRelatedConnectors(column, null, false, includeImplied));
         }
 
         return relationships;
@@ -45,19 +64,17 @@ public class DotConnectorFinder {
      * @param table1 Table
      * @param table2 Table
      * @throws IOException
-     * @return Set of <code>dot</code> relationships (as <code>DotEdge</code>s)
+     * @return Set of <code>dot</code> relationships (as {@link DotConnector}s)
      */
-    public Set getRelatedConnectors(Table table1, Table table2, WriteStats stats) {
-        Set relationships = new HashSet();
+    public Set<DotConnector> getRelatedConnectors(Table table1, Table table2, boolean includeExcluded, boolean includeImplied) {
+        Set<DotConnector> relationships = new HashSet<DotConnector>();
 
-        Iterator iter = table1.getColumns().iterator();
-        while (iter.hasNext()) {
-            relationships.addAll(getRelatedConnectors((TableColumn)iter.next(), table2, stats));
+        for (TableColumn column : table1.getColumns()) {
+            relationships.addAll(getRelatedConnectors(column, table2, includeExcluded, includeImplied));
         }
 
-        iter = table2.getColumns().iterator();
-        while (iter.hasNext()) {
-            relationships.addAll(getRelatedConnectors((TableColumn)iter.next(), table1, stats));
+        for (TableColumn column : table2.getColumns()) {
+            relationships.addAll(getRelatedConnectors(column, table1, includeExcluded, includeImplied));
         }
 
         return relationships;
@@ -67,35 +84,33 @@ public class DotConnectorFinder {
      * @param column TableColumn
      * @param targetTable Table
      * @throws IOException
-     * @return Set of <code>dot</code> relationships (as <code>DotEdge</code>s)
+     * @return Set of <code>dot</code> relationships (as {@link DotConnector}s)
      */
-    private Set getRelatedConnectors(TableColumn column, Table targetTable, WriteStats stats) {
-        Set relatedConnectors = new HashSet();
-        if (DotConnector.isExcluded(column, stats))
+    private Set<DotConnector> getRelatedConnectors(TableColumn column, Table targetTable, boolean includeExcluded, boolean includeImplied) {
+        Set<DotConnector> relatedConnectors = new HashSet<DotConnector>();
+        if (!includeExcluded && column.isExcluded())
             return relatedConnectors;
 
-        for (Iterator iter = column.getParents().iterator(); iter.hasNext(); ) {
-            TableColumn parentColumn = (TableColumn)iter.next();
+        for (TableColumn parentColumn : column.getParents()) {
             Table parentTable = parentColumn.getTable();
             if (targetTable != null && parentTable != targetTable)
                 continue;
-            if (DotConnector.isExcluded(parentColumn, stats))
+            if (targetTable == null && !includeExcluded && parentColumn.isExcluded())
                 continue;
             boolean implied = column.getParentConstraint(parentColumn).isImplied();
-            if (stats.includeImplied() || !implied) {
+            if (!implied || includeImplied) {
                 relatedConnectors.add(new DotConnector(parentColumn, column, implied));
             }
         }
 
-        for (Iterator iter = column.getChildren().iterator(); iter.hasNext(); ) {
-            TableColumn childColumn = (TableColumn)iter.next();
+        for (TableColumn childColumn : column.getChildren()) {
             Table childTable = childColumn.getTable();
             if (targetTable != null && childTable != targetTable)
                 continue;
-            if (DotConnector.isExcluded(childColumn, stats))
+            if (targetTable == null && !includeExcluded && childColumn.isExcluded())
                 continue;
             boolean implied = column.getChildConstraint(childColumn).isImplied();
-            if (stats.includeImplied() || !implied) {
+            if (!implied || includeImplied) {
                 relatedConnectors.add(new DotConnector(column, childColumn, implied));
             }
         }
