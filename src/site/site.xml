@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+  <bannerLeft>
+    <name>Wakaleo Consulting</name>
+    <src>http://www.wakaleo.com/templates/jazibal/images/logo-default.jpg</src>
+    <href>http://www.wakaleo.com</href>
+  </bannerLeft>
+  <body>
+    <links>
+      <item name="Schemaspy" href="http://schemaspy.sourceforge.net/"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>      
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>
+      <item name="FAQ" href="faq.html"/>      
+    </menu>
+    <menu ref="reports" />
+  </body>
+</project>

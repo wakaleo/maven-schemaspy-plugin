@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!--This configuration file was written by the eclipse-cs plugin configuration editor-->
+
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+<property name="severity" value="warning"/>
+<module name="TreeWalker">
+<module name="JavadocMethod">
+<property name="allowUndeclaredRTE" value="true"/>
+<property name="allowThrowsTagsForSubclasses" value="true"/>
+</module>
+<module name="JavadocStyle">
+<property name="excludeScope" value="nothing"/>
+<property name="checkEmptyJavadoc" value="true"/>
+<property name="checkHtml" value="false"/>
+</module>
+<module name="JavadocType">
+</module>
+<module name="JavadocVariable">
+</module>
+<module name="ConstantName">
+</module>
+<module name="MemberName">
+</module>
+<module name="ModifierOrder">
+</module>
+<module name="TodoComment">
+</module>
+<module name="FinalClass">
+</module>
+<module name="HideUtilityClassConstructor">
+</module>
+<module name="InterfaceIsType">
+</module>
+<module name="CovariantEquals">
+</module>
+<module name="DefaultComesLast">
+</module>
+<module name="DoubleCheckedLocking">
+</module>
+<module name="EqualsHashCode">
+<property name="severity" value="ignore"/>
+</module>
+<module name="FallThrough">
+</module>
+<module name="MultipleVariableDeclarations">
+</module>
+<module name="GenericIllegalRegexp">
+<metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="printStackTrace"/>
+<property name="format" value="^\s*\w*e\.printStackTrace\s*\(\);$"/>
+<property name="ignoreCase" value="true"/>
+<property name="ignoreComments" value="true"/>
+<property name="message" value="No system outputs to be used."/>
+</module>
+<module name="GenericIllegalRegexp">
+<metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="System Out"/>
+<property name="format" value="^\s*System.out"/>
+<property name="ignoreCase" value="true"/>
+<property name="ignoreComments" value="true"/>
+<property name="message" value="No system outputs to be used."/>
+</module>
+</module>
+</module>

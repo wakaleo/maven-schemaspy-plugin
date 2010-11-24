@@ -1,0 +1,22 @@
+ ------
+ Introduction
+ ------
+ 06 January 2006
+ ------
+
+Maven 2 SchemaSpy Plugin
+
+  The SchemaSpy plugin allows you to automatically run the {{{http://schemaspy.sourceforge.net/}SchemaSpy}} database analysis tool
+  on a dabatase and generate a site report with its results. 
+  SchemaSpy (http://schemaspy.sourceforge.net) does not need to be installed and
+  accessible on your machine. However, SchemaSpy also needs the 
+  {{{http://www.graphviz.org/}Graphvis}} tool to generate graphical representations
+  of the table/view relationships, so this needs to be installed on your
+  machine.
+  
+  The plugin accepts configuration parameters that will be used to customize the execution of the SchemaSpy tool.
+  
+* Usage
+
+   Instructions on how to use the SchemaSpy Plugin can be found {{{usage.html}here}}.
+

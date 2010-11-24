@@ -1,0 +1,176 @@
+ ------
+ Usage
+ ------
+ John Ferguson Smart
+ ------
+17 May 2007
+ ------
+
+Usage
+
+  The SchemaSpy plugin generates SchemaSpy reports describing a relational database.
+  It will look for an appropriate JDBC driver on the classpath (based on the 
+  database type), and by default will generate a report in the 
+  'target/site/schemaspy' directory. 
+  
+  The SchemaSpy plugin is currently hosted in the Wakaleo repository. To use
+  it, you need to add this repository to the <<<\<pluginRepositories\>>>>   
+  section of your pom: 
+  
++-----+
+    <pluginRepositories>
+    ...
+        <pluginRepository>
+            <id>Wakaleo Repository</id>
+            <url>http://maven.wakaleo.com/repos/</url>
+        </pluginRepository>
+        ...		
+    </pluginRepositories>
++-----+  
+  
+  To include a SchemaSpy report in your project site, 
+  set the following in the  <<<\<reporting\>>>> section of your pom:
+
++-----+
+<project>
+  ...
+  <reporting>
+    <plugins>
+        <plugin>
+            <groupId>com.wakaleo.schemaspy</groupId>
+            <artifactId>maven-schemaspy-plugin</artifactId>
+            <version>1.0</version>
+            <configuration>
+                <databaseType>mysql</databaseType>
+                <database>testdb</database>
+                <host>localhost</host>
+                <user>scott</user>
+                <password>tiger</password>
+            </configuration>
+        </plugin> 
+    </plugins>
+  </reporting>
+</project>
++-----+
+
+Configuration
+
+  The SchemaSpy plugin accepts all of the standard SchemaSpy parameters. 
+
+  Most databases with JDBC drivers available in the standard Maven repository should work out-of-the-box. 
+  Currently, these are:
+   * Derby
+   * MySQL
+   * HSQLDB
+   * PostgreSQL
+   * MS SQLServer using the JTDS driver (mssql-jtds)
+  Others, such as DB2, Oracle, MS SQL Server (if using the Microsoft driver) 
+  and Firebird, don't have drivers in the repositories. 
+
+  In this case,  or if you want to specify a different driver, you need to specify the driver manually 
+  using the <<<\<pathToDrivers\>>>> parameter:
+
++-----+
+<project>
+  ...
+  <reporting>
+    <plugins>
+        <plugin>
+            <groupId>com.wakaleo.schemaspy</groupId>
+            <artifactId>maven-schemaspy-plugin</artifactId>
+            <version>1.0</version>
+            <configuration>
+              <databaseType>mysql</databaseType>
+              <database>testdb</database>
+              <host>localhost</host>
+              <user>scott</user>
+              <password>tiger</password>
+              <outputDirectory>target/site/schemaSpy-full</outputDirectory>
+              <pathToDrivers>src/test/resources/lib/derby-10.1.2.1.jar</pathToDrivers>     
+              <commentsInitiallyDisplayed>true</commentsInitiallyDisplayed>
+              <noTableComments>true</noTableComments>
+              <noImplied>true</noImplied>
+              <allowHtmlInComments>true</allowHtmlInComments>
+              <cssStylesheet>testSchemaSpy.css</cssStylesheet>
+              <schemaDescription>Maven Plugin SchemaSpy Test</schemaDescription>
+            </configuration>
+        </plugin> 
+    </plugins>
+  </reporting>
+</project>
++-----+
+
+ For MSSQL Server, the mssql-jtds will use the open source JTDS driver for this database.
+
+ Rather than defining the database and host names and letting SchemaSpy
+ build the URL, you can alternatively specify the complete JDBC URL
+ using this parameter. If this parameter is defined, it will override
+ the host address (which, as a result, is not needed). Note that you still
+ need to specify the database type, since SchemaSpy uses its own
+ database properties file for extra information about each database.
+
++-----+
+<project>
+  ...
+  <reporting>
+    <plugins>
+        <plugin>
+            <groupId>com.wakaleo.schemaspy</groupId>
+            <artifactId>maven-schemaspy-plugin</artifactId>
+            <version>1.0</version>
+            <configuration>
+              <databaseType>mysql</databaseType>
+              <jdbcUrl>jdbc:mysql://localhost/testdb</jdbcUrl>
+              <user>scott</user>
+              <password>tiger</password>
+            </configuration>
+        </plugin> 
+    </plugins>
+  </reporting>
+</project>
++-----+
+
+ As a rule, it is not a good idea to keep usernames and passwords in the source code repository. An alternative is to
+ define the user and password values in your setting.xml file, as shown here:
+
++-----+
+<settings>
+  <localRepository>C:/maven/repository</localRepository>
+  <profiles>  
+   <profile>
+      <id>development</id>
+      <activation>
+         <activeByDefault>true</activeByDefault>
+     </activation>
+     <properties>
+        <schemaspy.username>john</schemaspy.username>
+        <schemaspy.password></schemaspy.password>
+     </properties>
+   </profile>
+  </profiles>  
+</settings>
++-----+
+
+ With this setup, you can use the ${schemaspy.username} and ${schemaspy.password}
+ values directly in your SchemaSpy plugin configuration:
+
++-----+
+<project>
+  ...
+  <reporting>
+    <plugins>
+        <plugin>
+            <groupId>com.wakaleo.schemaspy</groupId>
+            <artifactId>maven-schemaspy-plugin</artifactId>
+            <version>1.0</version>
+            <configuration>
+              <database>testdb</database>     
+              <jdbcUrl>jdbc:mysql://localhost/testdb</jdbcUrl>
+              <user>${schemaspy.username}</user>
+              <password>${schemaspy.password}</password>
+            </configuration>
+        </plugin> 
+    </plugins>
+  </reporting>
+</project>
++-----+
