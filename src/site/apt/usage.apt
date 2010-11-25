@@ -3,7 +3,7 @@
  ------
  John Ferguson Smart
  ------
-17 May 2007
+25 November 2010
  ------
 
 Usage
@@ -39,7 +39,7 @@ Usage
         <plugin>
             <groupId>com.wakaleo.schemaspy</groupId>
             <artifactId>maven-schemaspy-plugin</artifactId>
-            <version>1.0</version>
+            <version>5.0.0</version>
             <configuration>
                 <databaseType>mysql</databaseType>
                 <database>testdb</database>
@@ -51,6 +51,38 @@ Usage
     </plugins>
   </reporting>
 </project>
++-----+
+
+  Or, in Maven 3:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-site-plugin</artifactId>
+	        <version>3.0-beta-3</version>
+	        <configuration>
+	            <reportPlugins>
+	                <plugin>
+	                    <groupId>com.wakaleo.schemaspy</groupId>
+	                    <artifactId>maven-schemaspy-plugin</artifactId>
+	                    <version>${schemaspy.plugin.version}</version>
+	                    <configuration>
+	                        <databaseType>orathin</databaseType>
+	                        <database>${db.database}</database>
+	                        <host>${db.host}</host>
+	                        <user>${db.username}</user>
+	                        <password>${db.password}</password>
+	                        <port>${db.port}</port>
+	                    </configuration>
+	                </plugin>
+	            </reportPlugins>
+	        </configuration>
+	    </plugin>
+	 ...
 +-----+
 
 Configuration
@@ -67,7 +99,30 @@ Configuration
   Others, such as DB2, Oracle, MS SQL Server (if using the Microsoft driver) 
   and Firebird, don't have drivers in the repositories. 
 
-  In this case,  or if you want to specify a different driver, you need to specify the driver manually 
+  In this case, add a dependency for the driver you need to the plugin configuration in the <<<\<build\>>>> section of your pom.xml:
+  
++-----+
+        <build>
+          <plugins>
+			<plugin>
+				<groupId>com.wakaleo.schemaspy</groupId>
+				<artifactId>maven-schemaspy-plugin</artifactId>
+				<version>${schemaspy.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>ojdbc</artifactId>
+						<version>${oracle.jdbc.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		    ...
+		  </plugins>
+		</build>
++-----+
+
+  
+  Alternatively, if this doesn't work, you can to specify the driver manually 
   using the <<<\<pathToDrivers\>>>> parameter:
 
 +-----+
@@ -86,7 +141,7 @@ Configuration
               <user>scott</user>
               <password>tiger</password>
               <outputDirectory>target/site/schemaSpy-full</outputDirectory>
-              <pathToDrivers>src/test/resources/lib/derby-10.1.2.1.jar</pathToDrivers>     
+              <pathToDrivers>${com.oracle:ojdbc:jar}</pathToDrivers>     
               <commentsInitiallyDisplayed>true</commentsInitiallyDisplayed>
               <noTableComments>true</noTableComments>
               <noImplied>true</noImplied>
@@ -100,14 +155,14 @@ Configuration
 </project>
 +-----+
 
- For MSSQL Server, the mssql-jtds will use the open source JTDS driver for this database.
+  For MSSQL Server, the mssql-jtds will use the open source JTDS driver for this database.
 
- Rather than defining the database and host names and letting SchemaSpy
- build the URL, you can alternatively specify the complete JDBC URL
- using this parameter. If this parameter is defined, it will override
- the host address (which, as a result, is not needed). Note that you still
- need to specify the database type, since SchemaSpy uses its own
- database properties file for extra information about each database.
+  Rather than defining the database and host names and letting SchemaSpy
+  build the URL, you can alternatively specify the complete JDBC URL
+  using this parameter. If this parameter is defined, it will override
+  the host address (which, as a result, is not needed). Note that you still
+  need to specify the database type, since SchemaSpy uses its own
+  database properties file for extra information about each database.
 
 +-----+
 <project>
