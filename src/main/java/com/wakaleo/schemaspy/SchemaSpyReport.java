@@ -302,10 +302,20 @@ public class SchemaSpyReport extends AbstractMavenReport {
 	private String connprops;
 	
 	/**
+	 * The SchemaSpy analyser that generates the actual report.
+	 * Can be overridden for testing purposes.
+	 */
+	SchemaAnalyzer analyzer = new SchemaAnalyzer();
+	
+	/**
 	 * Utility class to help determine the type of the target database.
 	 */
 	private JDBCHelper jdbcHelper = new JDBCHelper();
 
+	protected void setSchemaAnalyzer(SchemaAnalyzer analyzer) {
+		this.analyzer = analyzer;
+	}
+	
 	/**
 	 * Convenience method used to build the schemaspy command line parameters.
 	 * 
@@ -394,7 +404,7 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		if ((jdbcUrl != null) && (databaseType == null)) {
 			databaseType = jdbcHelper.extractDatabaseType(jdbcUrl);
 		}
-		addToArguments(argList, "-cp", pathToDrivers);
+		addToArguments(argList, "-dp", pathToDrivers);
 		addToArguments(argList, "-db", database);
 		addToArguments(argList, "-host", host);
 		addToArguments(argList, "-port", port);
@@ -427,10 +437,10 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		*/
 
 		String[] args = (String[]) argList.toArray(new String[0]);
+		getLog().info("Generating SchemaSpy report with parameters:");
 		for (String arg : args) {
 			getLog().info(arg);
 		}
-		SchemaAnalyzer analyzer = new SchemaAnalyzer();
 		try {
 			analyzer.analyze(new Config(args));
 		} catch (Exception e) {
