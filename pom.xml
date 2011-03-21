@@ -1,9 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>6</version>
+    </parent>
     <groupId>com.wakaleo.schemaspy</groupId>
     <artifactId>maven-schemaspy-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>5.0.3-beta-SNAPSHOT</version>
+    <version>5.0.4-SNAPSHOT</version>
     <inceptionYear>2007</inceptionYear>
     <name>Maven SchemaSpy Plugin</name>
     <url>https://github.com/wakaleo/maven-schemaspy-plugin</url>
@@ -13,20 +18,37 @@
     <prerequisites>
         <maven>2.0</maven>
     </prerequisites>
-    <contributors>
-        <contributor>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <organization>
+        <name>Wakaleo Consulting</name>
+        <url>http://www.wakaleo.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>johnsmart</id>
             <name>John Ferguson Smart</name>
             <email>john.smart@wakaleo.com</email>
-            <organization>Wakaleo Consulting Ltd</organization>
-            <organizationUrl>http://www.wakaleo.com</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Java Developer</role>
-                <role>Release Manager</role>
-            </roles>
-            <timezone>+12</timezone>
-        </contributor>
-    </contributors>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/wakaleo/maven-schemaspy-plugin/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://www.wakaleo-labs.com/jenkins/view/maven-schemaspy-plugin</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:git:ssh://github.com/wakaleo/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/wakaleo/${project.artifactId}.git</developerConnection>
+        <url>http://github.com/wakaleo/${project.artifactId}</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -275,10 +297,4 @@
             <url>ftp://maven.wakaleo.com/mojo/maven-schemaspy-plugin</url>
         </site>
     </distributionManagement>
-
-    <scm>
-        <connection>scm:git:ssh://github.com/wakaleo/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/wakaleo/${project.artifactId}.git</developerConnection>
-        <url>http://github.com/wakaleo/${project.artifactId}</url>
-    </scm>
 </project>
