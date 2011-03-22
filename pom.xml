@@ -280,21 +280,4 @@
             </build>
         </profile>
     </profiles>
-
-    <distributionManagement>
-        <repository>
-            <id>wakaleo-releases</id>
-            <name>Wakaleo Maven Repository</name>
-            <url>http://www.wakaleo-labs.com/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>wakaleo-snapshots</id>
-            <name>Wakaleo Maven Snapshot Repository</name>
-            <url>http://www.wakaleo-labs.com/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <site>
-            <id>wakaleo.repository</id>
-            <url>ftp://maven.wakaleo.com/mojo/maven-schemaspy-plugin</url>
-        </site>
-    </distributionManagement>
 </project>
