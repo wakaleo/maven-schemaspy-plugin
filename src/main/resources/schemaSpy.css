@@ -180,6 +180,30 @@ a:visited {
   color: #000000;
 }
 
+.viewDefinition {
+  font-size: 90%;
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  float: left;
+  padding: 4px;
+  font-family: "Courier New", Courier, monospace
+}
+
+.viewReferences {
+  font-size: 90%;
+  padding: 4px;
+}
+
+/* wrap around divs that float so they "take up space" */
+div.spacer {
+  clear: both;
+}
+
+.preFormatted {
+  white-space: pre;
+}
+
 /* Tabs from http://www.alistapart.com/articles/slidingdoors/ */
 
 /* resolve an issue with always having a scrollbar for #header */
