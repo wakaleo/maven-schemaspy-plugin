@@ -103,12 +103,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.13</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc</artifactId>
             <version>11.2.0.2.0</version>
@@ -257,13 +251,13 @@
                                 <goals>
                                     <goal>test</goal>
                                 </goals>
-                                <configuration>
-                                    <excludes>
-                                        <exclude>**/*ExternalDatabaseTest.java</exclude>
-                                    </excludes>
-                                </configuration>
                             </execution>
                         </executions>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/*ExternalDatabaseTest.java</exclude>
+                            </excludes>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

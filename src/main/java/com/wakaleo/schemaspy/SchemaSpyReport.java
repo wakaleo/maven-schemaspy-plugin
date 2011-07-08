@@ -24,7 +24,7 @@ import com.wakaleo.schemaspy.util.JDBCHelper;
  * 
  *           SchemaSpy (http://schemaspy.sourceforge.net) does not need to be
  *           installed and accessible on your machine. However, SchemaSpy also
- *           needs the Graphvis tool (http://www.graphviz.org/) in order to
+ *           needs the Graphviz tool (http://www.graphviz.org/) in order to
  *           generate graphical representations of the table/view relationships,
  *           so this needs to be installed on your machine.
  * 
@@ -302,6 +302,20 @@ public class SchemaSpyReport extends AbstractMavenReport {
 	private String connprops;
 	
 	/**
+	 * Don't generate ads in reports
+	 * 
+	 * @parameter noAds
+	 */
+	private Boolean noAds;
+	
+	/**
+	 * Don't generate sourceforge logos in reports
+	 * 
+	 * @parameter noLogo
+	 */
+	private Boolean noLogo;
+	
+	/**
 	 * The SchemaSpy analyser that generates the actual report.
 	 * Can be overridden for testing purposes.
 	 */
@@ -432,6 +446,8 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		addFlagToArguments(argList, "-hq", highQuality);
 		addToArguments(argList, "connprops", connprops);
 		addFlagToArguments(argList, "-cid", commentsInitiallyDisplayed);
+		addFlagToArguments(argList, "-noads", noAds);
+		addFlagToArguments(argList, "-nologo", noLogo);
 		/*
 		addToArguments(argList, "-jdbcUrl", jdbcUrl);
 		*/
