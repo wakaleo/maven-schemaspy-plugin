@@ -400,10 +400,6 @@ public class SchemaSpyReport extends AbstractMavenReport {
 	@Override
 	protected void executeReport(Locale locale) throws MavenReportException {
 
-		if (runOnExecutionRoot && !project.isExecutionRoot()) {
-			return;
-		}
-
 		//
 		// targetDirectory should be set by the maven framework. This is
 		// jusr for unit testing purposes
@@ -474,6 +470,11 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		} catch (Exception e) {
 			throw new MavenReportException(e.getMessage(), e);
 		}
+	}
+
+	@Override
+	public boolean canGenerateReport() {
+		return !runOnExecutionRoot || project.isExecutionRoot();
 	}
 
 	@Override
