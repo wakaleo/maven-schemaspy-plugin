@@ -19,12 +19,10 @@ Usage
   
 +-----+
     <pluginRepositories>
-    ...
         <pluginRepository>
             <id>Wakaleo Repository</id>
-            <url>http://maven.wakaleo.com/repos/</url>
+            <url>http://www.wakaleo.com/maven/repos/</url>
         </pluginRepository>
-        ...		
     </pluginRepositories>
 +-----+  
   
@@ -39,7 +37,7 @@ Usage
         <plugin>
             <groupId>com.wakaleo.schemaspy</groupId>
             <artifactId>maven-schemaspy-plugin</artifactId>
-            <version>5.0.0</version>
+            <version>${schemaspy.plugin.version}</version>
             <configuration>
                 <databaseType>mysql</databaseType>
                 <database>testdb</database>
@@ -217,7 +215,7 @@ Configuration
         <plugin>
             <groupId>com.wakaleo.schemaspy</groupId>
             <artifactId>maven-schemaspy-plugin</artifactId>
-            <version>1.0</version>
+            <version>${schemaspy.plugin.version}</version>
             <configuration>
               <database>testdb</database>     
               <jdbcUrl>jdbc:mysql://localhost/testdb</jdbcUrl>
