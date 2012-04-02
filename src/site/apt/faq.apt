@@ -104,6 +104,6 @@ but it keeps crashing on me.
  * The SchemaSpy plugin is logging my database password, so exposing it in Jenkins logs. Can I hide it?
 
  The way to do this is to put the database connection details in a separate file 
- of key=value pairs containing a password=mypassword entry and a user=myUser entry.
- Point to that file with the -connprops option.
+ of key=value pairs containing a <<<password=mypassword>>> entry.
+ Point to that file with the <<<\<connprops\>>>> option.
 
