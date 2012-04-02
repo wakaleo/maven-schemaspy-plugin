@@ -100,3 +100,10 @@ but it keeps crashing on me.
  Sure. Just use the  <<<\<cssStylesheet\>>>> configuration option. The default one 
  is called schemaSpy.css, and can be found bundled in the plugin JAR (in the resources 
  directory). You can also check it out online in the Subversion repository.
+
+ * The SchemaSpy plugin is logging my database password, so exposing it in Jenkins logs. Can I hide it?
+
+ The way to do this is to put the database connection details in a separate file 
+ of key=value pairs containing a password=mypassword entry and a user=myUser entry.
+ Point to that file with the -connprops option.
+
