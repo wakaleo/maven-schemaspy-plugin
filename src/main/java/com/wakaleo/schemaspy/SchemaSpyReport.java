@@ -297,6 +297,9 @@ public class SchemaSpyReport extends AbstractMavenReport {
 	 * Specifies additional properties to be used when connecting to the database.
 	 * Specify the entries directly, escaping the ='s with \= and separating each key\=value
 	 * pair with a ;.
+	 * 
+	 * May also be a file name, useful for hiding connection properties from public logs. 
+	 * 
 	 * @parameter connprops
 	 */
 	private String connprops;
@@ -452,7 +455,7 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		addFlagToArguments(argList, "-sso", singleSignOn);
 		addFlagToArguments(argList, "-lq", lowQuality);
 		addFlagToArguments(argList, "-hq", highQuality);
-		addToArguments(argList, "connprops", connprops);
+		addToArguments(argList, "-connprops", connprops);
 		addFlagToArguments(argList, "-cid", commentsInitiallyDisplayed);
 		addFlagToArguments(argList, "-noads", noAds);
 		addFlagToArguments(argList, "-nologo", noLogo);
