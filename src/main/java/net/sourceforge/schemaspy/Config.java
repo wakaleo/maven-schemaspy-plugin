@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1210,7 +1211,25 @@ public class Config
 
     public static String getLoadedFromJar() {
         String classpath = System.getProperty("java.class.path");
-        return new StringTokenizer(classpath, File.pathSeparator).nextToken();
+        String loadedFrom = new StringTokenizer(classpath, File.pathSeparator).nextToken();
+	String path = Config.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	String decodedPath = null ;
+	try {
+		decodedPath = URLDecoder.decode(path, "UTF-8");
+        }
+	catch (java.io.UnsupportedEncodingException uee) {
+		System.err.println("Unsupported UTF-8 encoding exception caught processing path = \""
+		                  + "\" - defaulting to first classpath element"
+				  );
+		decodedPath = loadedFrom ;
+        }
+	System.err.println("classpath="+classpath);
+	System.err.println("loadedFrom="+loadedFrom);
+	System.err.println("path="+path);
+	System.err.println("decodedPath="+decodedPath);
+        return decodedPath ;
+        //return loadedFrom ;
+        //return new StringTokenizer(classpath, File.pathSeparator).nextToken();
     }
 
     /**
