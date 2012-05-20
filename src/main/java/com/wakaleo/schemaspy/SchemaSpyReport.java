@@ -213,6 +213,13 @@ public class SchemaSpyReport extends AbstractMavenReport {
 	private Boolean noHtml;
 
 	/**
+	 * Detail of execution logging.
+	 *
+	 * @parameter logLevel
+	 */
+	private String logLevel;
+
+	/**
 	 * Some databases, like Derby, will crash if you use the old driver object
 	 * to establish a connection (eg "connection = driver.connect(...)"). In
 	 * this case, set useDriverManager to true to use the
@@ -441,6 +448,7 @@ public class SchemaSpyReport extends AbstractMavenReport {
 		addFlagToArguments(argList, "-ahic", allowHtmlInComments);
 		addFlagToArguments(argList, "-noimplied", noImplied);
 		addFlagToArguments(argList, "-nohtml", noHtml);
+		addToArguments(argList, "-loglevel", logLevel);
 		addFlagToArguments(argList, "-norows", noRows);
 		addFlagToArguments(argList, "-noviews", noViews);
 		addFlagToArguments(argList, "-noschema", noSchema);
