@@ -131,6 +131,23 @@
         </configuration>
       </plugin>
 
+      <!-- Define the Main class of the output JAR file -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>net.sourceforge.schemaspy.Main</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
     </plugins>
     <extensions>
       <extension>
