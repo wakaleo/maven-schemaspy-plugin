@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
@@ -1211,25 +1213,38 @@ public class Config
 
     public static String getLoadedFromJar() {
         String classpath = System.getProperty("java.class.path");
-        String loadedFrom = new StringTokenizer(classpath, File.pathSeparator).nextToken();
-	String path = Config.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-	String decodedPath = null ;
-	try {
-		decodedPath = URLDecoder.decode(path, "UTF-8");
-        }
-	catch (java.io.UnsupportedEncodingException uee) {
-		System.err.println("Unsupported UTF-8 encoding exception caught processing path = \""
-		                  + "\" - defaulting to first classpath element"
-				  );
-		decodedPath = loadedFrom ;
-        }
-	System.err.println("classpath="+classpath);
-	System.err.println("loadedFrom="+loadedFrom);
-	System.err.println("path="+path);
-	System.err.println("decodedPath="+decodedPath);
-        return decodedPath ;
-        //return loadedFrom ;
         //return new StringTokenizer(classpath, File.pathSeparator).nextToken();
+      String originalPath = new StringTokenizer(classpath, File.pathSeparator).nextToken();
+      String loadedFrom = null; 
+
+      /*
+       *Get the JAR file path from the URL. 
+       *We canot simply use location.getPath() because the returned value is invalid in Windows
+       * 
+       *First we try to get a File from the URL, returning the canonical path.
+       *If we cannot create a File from the URL we fall back to the original return value
+       * 
+       */
+      URL location = Config.class.getProtectionDomain().getCodeSource().getLocation();
+      File urlFile = null; 
+      try
+      {
+        try
+        {
+          urlFile= new File(location.toURI()); 
+        }
+        catch (URISyntaxException use)
+        {
+          urlFile= new File(location.getPath()); 
+        }
+        loadedFrom=urlFile.getCanonicalPath();
+      }
+      catch (IOException ioe)
+      {
+	//Fallback to the original path returned 
+        loadedFrom=originalPath;
+      }
+      return loadedFrom ;
     }
 
     /**
