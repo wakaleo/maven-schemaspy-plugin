@@ -28,6 +28,7 @@ import net.sourceforge.schemaspy.model.Database;
 import net.sourceforge.schemaspy.model.ForeignKeyConstraint;
 import net.sourceforge.schemaspy.model.Table;
 import net.sourceforge.schemaspy.model.TableColumn;
+import net.sourceforge.schemaspy.util.HtmlEncoder;
 import net.sourceforge.schemaspy.util.LineWriter;
 
 /**
@@ -110,7 +111,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                     out.write("  <td class='detail'>");
                     String tableName = childTable.getName();
                     out.write("<a href='tables/");
-                    out.write(tableName);
+                    out.write(encodeHref(tableName));
                     out.write(".html'>");
                     out.write(tableName);
                     out.write("</a>.");
@@ -120,7 +121,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                     out.write("  <td class='detail'>");
                     tableName = impliedConstraint.getParentTable().getName();
                     out.write("<a href='tables/");
-                    out.write(tableName);
+                    out.write(encodeHref(tableName));
                     out.write(".html'>");
                     out.write(tableName);
                     out.write("</a>.");
@@ -167,7 +168,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                 out.writeln(" <tr>");
                 out.write("  <td class='detail'>");
                 out.write("<a href='tables/");
-                out.write(table.getName());
+                out.write(encodeHref(table.getName()));
                 out.write(".html'>");
                 out.write(table.getName());
                 out.write("</a>");
@@ -204,7 +205,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                 out.writeln(" <tr>");
                 out.write("  <td class='detail'>");
                 out.write("<a href='tables/");
-                out.write(table.getName());
+                out.write(encodeHref(table.getName()));
                 out.write(".html'>");
                 out.write(table.getName());
                 out.write("</a>");
@@ -238,7 +239,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                 out.writeln(" <tr>");
                 out.write("  <td class='detail'>");
                 out.write("<a href='tables/");
-                out.write(table.getName());
+                out.write(encodeHref(table.getName()));
                 out.write(".html'>");
                 out.write(table.getName());
                 out.write("</a></td><td class='detail'>");
@@ -275,7 +276,7 @@ public class HtmlAnomaliesPage extends HtmlFormatter {
                 out.write("  <td class='detail'>");
                 String tableName = column.getTable().getName();
                 out.write("<a href='tables/");
-                out.write(tableName);
+                out.write(encodeHref(tableName));
                 out.write(".html'>");
                 out.write(tableName);
                 out.write("</a>.");

@@ -19,6 +19,8 @@
 package net.sourceforge.schemaspy.view;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +37,7 @@ public class HtmlFormatter {
     protected final boolean encodeComments       = Config.getInstance().isEncodeCommentsEnabled();
     protected final boolean displayNumRows       = Config.getInstance().isNumRowsEnabled();
     private   final boolean isMetered            = Config.getInstance().isMeterEnabled();
+    private   final String  charset              = Config.getInstance().getCharset();
 
     protected HtmlFormatter() {
     }
@@ -125,7 +128,7 @@ public class HtmlFormatter {
             html.writeln("  <li" + (isOrphansPage() ? " id='current'" : "") + "><a href='" + path + "utilities.html' title='View of tables with neither parents nor children'>Utility&nbsp;Tables</a></li>");
         html.writeln("  <li" + (isConstraintsPage() ? " id='current'" : "") + "><a href='" + path + "constraints.html' title='Useful for diagnosing error messages that just give constraint name or number'>Constraints</a></li>");
         html.writeln("  <li" + (isAnomaliesPage() ? " id='current'" : "") + "><a href='" + path + "anomalies.html' title=\"Things that might not be quite right\">Anomalies</a></li>");
-        html.writeln("  <li" + (isColumnsPage() ? " id='current'" : "") + "><a href='" + path + HtmlColumnsPage.getInstance().getColumnInfos().get(0) + "' title=\"All of the columns in the schema\">Columns</a></li>");
+        html.writeln("  <li" + (isColumnsPage() ? " id='current'" : "") + "><a href='" + path + encodeHref(HtmlColumnsPage.getInstance().getColumnInfos().get(0)) + "' title=\"All of the columns in the schema\">Columns</a></li>");
         html.writeln("  <li><a href='http://sourceforge.net/donate/index.php?group_id=137197' title='Please help keep SchemaSpy alive' target='_blank'>Donate</a></li>");
         html.writeln(" </ul>");
         html.writeln("</div>");
@@ -252,7 +255,7 @@ public class HtmlFormatter {
             for (TableColumn column : notInDiagram) {
                 if (!column.getTable().equals(table)) {
                     html.write("<a href=\"" + getPathToRoot() + "tables/");
-                    html.write(column.getTable().getName());
+                    html.write(encodeHref(column.getTable().getName()));
                     html.write(".html\">");
                     html.write(column.getTable().getName());
                     html.write(".");
@@ -286,6 +289,36 @@ public class HtmlFormatter {
         html.writeln("</body>");
         html.writeln("</html>");
     }
+
+
+    /**
+     * Return an URL-encoded version of the specified string in the specified encoding.
+     *
+     * @param str
+     * @param charset
+     * @return
+     */
+    protected String encodeHref(String str) {
+	try {
+    	   //return URLEncoder.encode(str, charset).replaceAll("+","%20");
+    	   String url = URLEncoder.encode(str, charset);
+	   int len = url.length();
+    	   StringBuilder buf = new StringBuilder(len * 2); // x2 should limit # of reallocs
+    	   for (int i = 0; i < len; i++) {
+			buf.append( ( '+' == url.charAt(i) )
+				   ? "%20"
+				   : url.charAt(i)
+				  );
+		}
+    	   return buf.toString();
+	}
+	catch(UnsupportedEncodingException uee)
+	//catch(Exception ex)
+	{
+	  return str;
+	}
+    }
+
 
     /**
      * Override if your output doesn't live in the root directory.

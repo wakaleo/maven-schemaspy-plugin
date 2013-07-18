@@ -227,7 +227,7 @@ public class HtmlColumnsPage extends HtmlFormatter {
             } else {
                 buf.append(" class='notSortedByColumn'>");
                 buf.append("<a href='");
-                buf.append(selectedColumn.getLocation(columnName));
+                buf.append(encodeHref(selectedColumn.getLocation(columnName)));
                 buf.append("#columns'><span class='notSortedByColumn'>");
                 buf.append(columnName);
                 buf.append("</span></a>");

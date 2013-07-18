@@ -193,7 +193,7 @@ public class HtmlMainIndexPage extends HtmlFormatter {
     private void writeLineItem(Table table, boolean showIds, LineWriter html) throws IOException {
         html.write(" <tr class='" + (table.isView() ? "view" : "tbl") + "' valign='top'>");
         html.write("  <td class='detail'><a href='tables/");
-        html.write(table.getName());
+        html.write(encodeHref(table.getName()));
         html.write(".html'>");
         html.write(table.getName());
         html.writeln("</a></td>");
