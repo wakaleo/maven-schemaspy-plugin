@@ -19,8 +19,6 @@
 package net.sourceforge.schemaspy.view;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,12 +30,13 @@ import net.sourceforge.schemaspy.model.TableColumn;
 import net.sourceforge.schemaspy.util.Dot;
 import net.sourceforge.schemaspy.util.HtmlEncoder;
 import net.sourceforge.schemaspy.util.LineWriter;
+import net.sourceforge.schemaspy.util.URLEncoder;
 
 public class HtmlFormatter {
     protected final boolean encodeComments       = Config.getInstance().isEncodeCommentsEnabled();
     protected final boolean displayNumRows       = Config.getInstance().isNumRowsEnabled();
     private   final boolean isMetered            = Config.getInstance().isMeterEnabled();
-    private   final String  charset              = Config.getInstance().getCharset();
+    private   final URLEncoder  urlEncoder       = new URLEncoder( Config.getInstance().getCharset());
 
     protected HtmlFormatter() {
     }
@@ -291,32 +290,14 @@ public class HtmlFormatter {
     }
 
 
-    /**
-     * Return an URL-encoded version of the specified string in the specified encoding.
+    /*
+     * Return an URL-encoded version of the specified string.
      *
      * @param str
-     * @param charset
      * @return
      */
     protected String encodeHref(String str) {
-	try {
-    	   //return URLEncoder.encode(str, charset).replaceAll("+","%20");
-    	   String url = URLEncoder.encode(str, charset);
-	   int len = url.length();
-    	   StringBuilder buf = new StringBuilder(len * 2); // x2 should limit # of reallocs
-    	   for (int i = 0; i < len; i++) {
-			buf.append( ( '+' == url.charAt(i) )
-				   ? "%20"
-				   : url.charAt(i)
-				  );
-		}
-    	   return buf.toString();
-	}
-	catch(UnsupportedEncodingException uee)
-	//catch(Exception ex)
-	{
-	  return str;
-	}
+    	   return urlEncoder.encode(str);
     }
 
 
