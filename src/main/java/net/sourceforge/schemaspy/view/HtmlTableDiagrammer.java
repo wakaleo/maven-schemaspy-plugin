@@ -61,18 +61,18 @@ public class HtmlTableDiagrammer extends HtmlDiagramFormatter {
             }
             html.write(map);
             map = null;
-            html.writeln("  <a name='diagram'><img id='oneDegreeImg' src='../diagrams/" + oneDegreeDiagramFile.getName() + "' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
+            html.writeln("  <a name='diagram'><img id='oneDegreeImg' src='../diagrams/" + encodeHref( oneDegreeDiagramFile.getName() ) + "' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
 
             if (impliedDotFile.exists()) {
                 html.writeln(dot.generateDiagram(impliedDotFile, impliedDiagramFile));
-                html.writeln("  <a name='diagram'><img id='impliedTwoDegreesImg' src='../diagrams/" + impliedDiagramFile.getName() + "' usemap='#impliedTwoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
+                html.writeln("  <a name='diagram'><img id='impliedTwoDegreesImg' src='../diagrams/" + encodeHref( impliedDiagramFile.getName() ) + "' usemap='#impliedTwoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
             } else {
                 impliedDotFile.delete();
                 impliedDiagramFile.delete();
             }
             if (twoDegreesDotFile.exists()) {
                 html.writeln(dot.generateDiagram(twoDegreesDotFile, twoDegreesDiagramFile));
-                html.writeln("  <a name='diagram'><img id='twoDegreesImg' src='../diagrams/" + twoDegreesDiagramFile.getName() + "' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
+                html.writeln("  <a name='diagram'><img id='twoDegreesImg' src='../diagrams/" + encodeHref (twoDegreesDiagramFile.getName() ) + "' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>");
             } else {
                 twoDegreesDotFile.delete();
                 twoDegreesDiagramFile.delete();

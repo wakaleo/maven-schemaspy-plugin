@@ -81,7 +81,7 @@ public class HtmlRelationshipsPage extends HtmlDiagramFormatter {
                     System.out.print(".");
 
                 html.writeln(dot.generateDiagram(compactRelationshipsDotFile, compactRelationshipsDiagramFile));
-                html.writeln("  <a name='diagram'><img id='realCompactImg' src='diagrams/summary/" + compactRelationshipsDiagramFile.getName() + "' usemap='#compactRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
+                html.writeln("  <a name='diagram'><img id='realCompactImg' src='diagrams/summary/" + encodeHref( compactRelationshipsDiagramFile.getName() ) + "' usemap='#compactRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
 
                 // we've run into instances where the first diagrams get generated, but then
                 // dot fails on the second one...try to recover from that scenario 'somewhat'
@@ -91,7 +91,7 @@ public class HtmlRelationshipsPage extends HtmlDiagramFormatter {
                         System.out.print(".");
 
                     html.writeln(dot.generateDiagram(largeRelationshipsDotFile, largeRelationshipsDiagramFile));
-                    html.writeln("  <a name='diagram'><img id='realLargeImg' src='diagrams/summary/" + largeRelationshipsDiagramFile.getName() + "' usemap='#largeRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
+                    html.writeln("  <a name='diagram'><img id='realLargeImg' src='diagrams/summary/" + encodeHref( largeRelationshipsDiagramFile.getName() ) + "' usemap='#largeRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
                 } catch (Dot.DotFailure dotFailure) {
                     System.err.println("dot failed to generate all of the relationships diagrams:");
                     System.err.println(dotFailure);
@@ -105,13 +105,13 @@ public class HtmlRelationshipsPage extends HtmlDiagramFormatter {
                         System.out.print(".");
 
                     html.writeln(dot.generateDiagram(compactImpliedDotFile, compactImpliedDiagramFile));
-                    html.writeln("  <a name='diagram'><img id='impliedCompactImg' src='diagrams/summary/" + compactImpliedDiagramFile.getName() + "' usemap='#compactImpliedRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
+                    html.writeln("  <a name='diagram'><img id='impliedCompactImg' src='diagrams/summary/" + encodeHref(compactImpliedDiagramFile.getName()) + "' usemap='#compactImpliedRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
 
                     if (!fineEnabled)
                         System.out.print(".");
 
                     html.writeln(dot.generateDiagram(largeImpliedDotFile, largeImpliedDiagramFile));
-                    html.writeln("  <a name='diagram'><img id='impliedLargeImg' src='diagrams/summary/" + largeImpliedDiagramFile.getName() + "' usemap='#largeImpliedRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
+                    html.writeln("  <a name='diagram'><img id='impliedLargeImg' src='diagrams/summary/" + encodeHref(largeImpliedDiagramFile.getName() ) + "' usemap='#largeImpliedRelationshipsDiagram' class='diagram' border='0' alt=''></a>");
                 }
             } catch (Dot.DotFailure dotFailure) {
                 System.err.println("dot failed to generate all of the relationships diagrams:");
