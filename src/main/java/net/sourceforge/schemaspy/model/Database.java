@@ -183,10 +183,12 @@ public class Database {
 
             // Oracle 10g introduced problematic flashback tables
             // with bizarre illegal names
-            if (name.indexOf("$") != -1) {
+            // Naming Convention "BIN$"${globalUID}${version}
+            // http://docs.oracle.com/cd/B19306_01/backup.102/b14192/flashptr004.htm#i1016977
+            if (name.indexOf("BIN$") == 0) {
                 if (fineEnabled) {
                     logger.fine("Excluding " + clazz + " " + name +
-                                ": embedded $ implies illegal name");
+                                ": \"BIN$\" prefix implies  a (deleted) table in the Oracle Recycle Bin ");
                 }
                 return false;
             }
