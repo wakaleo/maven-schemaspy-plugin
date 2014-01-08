@@ -79,7 +79,7 @@ public class HtmlMainIndexPage extends HtmlFormatter {
 
         int numTableCols = 0;
         int numViewCols = 0;
-        int numRows = 0;
+        long numRows = 0;
         for (Table table : byName) {
             writeLineItem(table, showIds, html);
 
@@ -244,7 +244,7 @@ public class HtmlMainIndexPage extends HtmlFormatter {
         html.writeln("  </tr>");
     }
 
-    protected void writeFooter(int numTables, int numTableCols, int numViews, int numViewCols, int numRows, LineWriter html) throws IOException {
+    protected void writeFooter(int numTables, int numTableCols, int numViews, int numViewCols, long numRows, LineWriter html) throws IOException {
         html.writeln("  <tr>");
         html.writeln("    <td class='detail'>&nbsp;</td>");
         html.writeln("    <td class='detail'>&nbsp;</td>");

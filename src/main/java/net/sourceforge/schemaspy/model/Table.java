@@ -57,7 +57,7 @@ public class Table implements Comparable<Table> {
     private final CaseInsensitiveMap<TableIndex> indexes = new CaseInsensitiveMap<TableIndex>();
     private       Object id;
     private final Map<String, String> checkConstraints = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-    private Integer numRows;
+    private Long numRows;
     protected final Database db;
     protected final Properties properties;
     private       String comments;
@@ -895,7 +895,7 @@ public class Table implements Comparable<Table> {
      *
      * @return
      */
-    public int getNumRows() {
+    public long getNumRows() {
         if (numRows == null) {
             numRows = Config.getInstance().isNumRowsEnabled() ? fetchNumRows() : -1;
         }
@@ -908,7 +908,7 @@ public class Table implements Comparable<Table> {
      *
      * @param numRows
      */
-    public void setNumRows(int numRows) {
+    public void setNumRows(long numRows) {
         this.numRows = numRows;
     }
 
@@ -918,10 +918,10 @@ public class Table implements Comparable<Table> {
      * returns -1 if unable to successfully fetch the row count
      *
      * @param db Database
-     * @return int
+     * @return long
      * @throws SQLException
      */
-    protected int fetchNumRows() {
+    protected long fetchNumRows() {
         if (properties == null) // some "meta" tables don't have associated properties
             return 0;
 
@@ -937,7 +937,7 @@ public class Table implements Comparable<Table> {
                 rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    return rs.getInt("row_count");
+                    return rs.getLong("row_count");
                 }
             } catch (SQLException sqlException) {
                 // don't die just because this failed
@@ -975,7 +975,7 @@ public class Table implements Comparable<Table> {
         }
     }
 
-    protected int fetchNumRows(String clause, boolean forceQuotes) throws SQLException {
+    protected long fetchNumRows(String clause, boolean forceQuotes) throws SQLException {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         StringBuilder sql = new StringBuilder("select ");
@@ -996,7 +996,7 @@ public class Table implements Comparable<Table> {
             stmt = db.getConnection().prepareStatement(sql.toString());
             rs = stmt.executeQuery();
             while (rs.next()) {
-                return rs.getInt(1);
+                return rs.getLong(1);
             }
             return -1;
         } catch (SQLException exc) {

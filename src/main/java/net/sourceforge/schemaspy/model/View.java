@@ -68,7 +68,7 @@ public class View extends Table {
     }
 
     @Override
-    protected int fetchNumRows() {
+    protected long fetchNumRows() {
         return 0;
     }
 
