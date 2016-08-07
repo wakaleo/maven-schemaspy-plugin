@@ -26,6 +26,7 @@ import net.sourceforge.schemaspy.Config;
 import net.sourceforge.schemaspy.model.Table;
 import net.sourceforge.schemaspy.model.TableColumn;
 import net.sourceforge.schemaspy.model.TableIndex;
+import net.sourceforge.schemaspy.util.URLEncoder;
 
 public class DotNode {
     private final Table table;
@@ -34,6 +35,7 @@ public class DotNode {
     private final Set<TableColumn> excludedColumns = new HashSet<TableColumn>();
     private final String lineSeparator = System.getProperty("line.separator");
     private final boolean displayNumRows = Config.getInstance().isNumRowsEnabled();
+    private static final URLEncoder urlEncoder = new URLEncoder(Config.DOT_CHARSET);
 
     /**
      * Create a DotNode that is a focal point of a diagram.
@@ -149,7 +151,7 @@ public class DotNode {
         if (table.isView())
             buf.append("view");
         else {
-            final int numRows = table.getNumRows();
+            final long numRows = table.getNumRows();
             if (displayNumRows && numRows != -1) {
                 buf.append(NumberFormat.getInstance().format(numRows));
                 buf.append(" row");
@@ -170,7 +172,7 @@ public class DotNode {
 
         buf.append("    </TABLE>>" + lineSeparator);
         if (!table.isRemote() || Config.getInstance().isOneOfMultipleSchemas())
-            buf.append("    URL=\"" + path + toNCR(tableName) + ".html\"" + lineSeparator);
+            buf.append("    URL=\"" + path + toNCR( urlEncoder.encode(tableName) ) + ".html\"" + lineSeparator);
         buf.append("    tooltip=\"" + toNCR(fqTableName) + "\"" + lineSeparator);
         buf.append("  ];");
 

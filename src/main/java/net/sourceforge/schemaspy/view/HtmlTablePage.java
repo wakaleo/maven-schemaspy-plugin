@@ -150,7 +150,7 @@ public class HtmlTablePage extends HtmlFormatter {
         }
         if (tableName != null) {
             out.write(" <td class='detail'><a href='tables/");
-            out.write(tableName);
+            out.write(encodeHref(tableName));
             out.write(".html'>");
             out.write(tableName);
             out.writeln("</a></td>");
@@ -256,7 +256,7 @@ public class HtmlTablePage extends HtmlFormatter {
                 if (column.getTable().isRemote()) {
                     out.write("../../" + column.getTable().getSchema() + "/tables/");
                 }
-                out.write(columnTableName);
+                out.write(encodeHref(columnTableName));
                 out.write(".html");
             }
             out.write("'>");
@@ -434,7 +434,7 @@ public class HtmlTablePage extends HtmlFormatter {
                 out.write("  ");
                 for (Table t : references) {
                     out.write("<a href='");
-                    out.write(t.getName());
+                    out.write(encodeHref(t.getName()));
                     out.write(".html'>");
                     out.write(t.getName());
                     out.write("</a>&nbsp;");

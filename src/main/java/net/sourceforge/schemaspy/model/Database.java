@@ -183,10 +183,12 @@ public class Database {
 
             // Oracle 10g introduced problematic flashback tables
             // with bizarre illegal names
-            if (name.indexOf("$") != -1) {
+            // Naming Convention "BIN$"${globalUID}${version}
+            // http://docs.oracle.com/cd/B19306_01/backup.102/b14192/flashptr004.htm#i1016977
+            if (name.indexOf("BIN$") == 0) {
                 if (fineEnabled) {
                     logger.fine("Excluding " + clazz + " " + name +
-                                ": embedded $ implies illegal name");
+                                ": \"BIN$\" prefix implies  a (deleted) table in the Oracle Recycle Bin ");
                 }
                 return false;
             }
@@ -308,7 +310,7 @@ public class Database {
         final String type;
         final String remarks;
         final String viewSql;
-        final int numRows;  // -1 if not determined
+        final long numRows;  // -1 if not determined
 
         /**
          * @param schema
@@ -318,7 +320,7 @@ public class Database {
          * @param text optional textual SQL used to create the view
          * @param numRows number of rows, or -1 if not determined
          */
-        BasicTableMeta(String schema, String name, String type, String remarks, String text, int numRows)
+        BasicTableMeta(String schema, String name, String type, String remarks, String text, long numRows)
         {
             this.schema = schema;
             this.name = name;
@@ -363,7 +365,7 @@ public class Database {
                     String remarks = getOptionalString(rs, clazz + "_comment");
                     String text = forTables ? null : getOptionalString(rs, "view_definition");
                     String rows = forTables ? getOptionalString(rs, "table_rows") : null;
-                    int numRows = rows == null ? -1 : Integer.parseInt(rows);
+                    long numRows = rows == null ? -1 : Long.parseLong(rows);
 
                     basics.add(new BasicTableMeta(sch, name, clazz, remarks, text, numRows));
                 }

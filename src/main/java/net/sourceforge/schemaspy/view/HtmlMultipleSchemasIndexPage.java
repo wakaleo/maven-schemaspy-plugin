@@ -73,7 +73,7 @@ public class HtmlMultipleSchemasIndexPage extends HtmlFormatter {
         }
         html.writeln("</title>");
         html.write("  <link rel=stylesheet href='");
-        html.write(aSchema);
+        html.write(encodeHref(aSchema));
         html.writeln("/schemaSpy.css' type='text/css'>");
         html.writeln("  <meta HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=" + Config.getInstance().getCharset() + "'>");
         html.writeln("</head>");
@@ -141,7 +141,7 @@ public class HtmlMultipleSchemasIndexPage extends HtmlFormatter {
     private void writeLineItem(String schema, LineWriter index) throws IOException {
         index.writeln(" <tr>");
         index.write("  <td class='detail'><a href='");
-        index.write(schema);
+        index.write(encodeHref(schema));
         index.write("/index.html'>");
         index.write(schema);
         index.writeln("</a></td>");

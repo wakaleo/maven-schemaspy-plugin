@@ -87,7 +87,7 @@ public class HtmlOrphansPage extends HtmlDiagramFormatter {
                     return false;
                 }
 
-                html.write("  <img src='diagrams/summary/" + imgFile.getName() + "' usemap='#" + table + "' border='0' alt='' align='top'");
+                html.write("  <img src='diagrams/summary/" + encodeHref( imgFile.getName() ) + "' usemap='#" + table + "' border='0' alt='' align='top'");
                 if (orphansWithImpliedRelationships.contains(table))
                     html.write(" class='impliedNotOrphan'");
                 html.writeln(">");
