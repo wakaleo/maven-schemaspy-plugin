@@ -7,23 +7,17 @@
 
 package com.wakaleo.schemaspy.util;
 
-import junit.framework.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * 
  * @author john
  */
-public class JDBCHelperTest extends TestCase {
+public class JDBCHelperTest  {
 
-    public JDBCHelperTest(String testName) {
-        super(testName);
-    }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
 
     private final String[][] DATABASE_TYPES_TEST_DATA = {
             { "jdbc:derby:testdb", "derby" },
@@ -47,6 +41,7 @@ public class JDBCHelperTest extends TestCase {
      * Test of extractDatabaseType method, of class
      * com.wakaleo.maven.plugin.schemaspy.util.JDBCHelper.
      */
+    @Test
     public void testExtractDatabaseType() {
         System.out.println("extractDatabaseType");
 

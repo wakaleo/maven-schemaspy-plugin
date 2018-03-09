@@ -7,29 +7,22 @@
 
 package com.wakaleo.schemaspy.util;
 
+import org.junit.Test;
+
 import java.sql.ResultSet;
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * 
  * @author john
  */
-public class DatabaseHelperTest extends TestCase {
+public class DatabaseHelperTest {
 
     // public static final String TESTDB_URL =
 
-    public DatabaseHelperTest(String testName) {
-        super(testName);
-    }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testSetupDatabase() throws Exception {
         DatabaseHelper.setupDatabase("src/test/resources/sql/testdb.sql");
 

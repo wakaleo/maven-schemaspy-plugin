@@ -1,48 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
-
-<!--
-    This configuration file was written by the eclipse-cs plugin configuration editor
--->
-<!--
-    Checkstyle-Configuration: schemaspy-checkstyle
-    Description: none
--->
 <module name="Checker">
-  <property name="severity" value="warning"/>
+  <property name="severity" value="warning" />
   <module name="TreeWalker">
+    <module name="FileContentsHolder" />
+    <module name="JavadocType">
+      <property name="allowUnknownTags" value="true" />
+    </module>
+    <module name="JavadocVariable" />
+    <module name="LocalFinalVariableName" />
+    <module name="LocalVariableName" />
+    <module name="MemberName" />
+    <module name="MethodName" />
+    <module name="PackageName" />
+    <module name="ParameterName" />
+    <module name="StaticVariableName" />
+    <module name="TypeName" />
+    <module name="AvoidStarImport" />
+    <module name="RedundantImport" />
+    <module name="UnusedImports" />
+    <module name="LineLength">
+      <property name="max" value="100" />
+    </module>
+    <module name="MethodLength">
+      <property name="max" value="50" />
+    </module>
+    <module name="ParameterNumber" />
+    <module name="EmptyForIteratorPad" />
+    <module name="MethodParamPad">
+      <property name="tokens"
+                value="CTOR_DEF,METHOD_CALL,METHOD_DEF,LITERAL_NEW,SUPER_CTOR_CALL" />
+    </module>
+    <module name="NoWhitespaceBefore" />
+    <module name="OperatorWrap">
+      <property name="tokens"
+                value="COLON,NOT_EQUAL,QUESTION,DIV,BXOR,MINUS,STAR,BAND,LAND,MOD,PLUS,LT,SL,LE,EQUAL,GT,GE,SR,BSR,BOR,LOR,LITERAL_INSTANCEOF" />
+    </module>
+    <module name="ParenPad" />
+    <module name="TypecastParenPad">
+      <property name="tokens" value="RPAREN,TYPECAST" />
+    </module>
+    <module name="WhitespaceAfter" />
+    <module name="WhitespaceAround">
+      <property name="tokens"
+                value="COLON,NOT_EQUAL,QUESTION,DIV,DIV_ASSIGN,BXOR,BXOR_ASSIGN,MINUS,LCURLY,RCURLY,STAR,STAR_ASSIGN,TYPE_EXTENSION_AND,BAND,LAND,BAND_ASSIGN,MOD,MOD_ASSIGN,PLUS,PLUS_ASSIGN,LT,SL,SL_ASSIGN,LE,ASSIGN,MINUS_ASSIGN,EQUAL,GT,GE,SR,SR_ASSIGN,BSR,BSR_ASSIGN,BOR,BOR_ASSIGN,LOR,LITERAL_ASSERT,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,SLIST,LITERAL_SYNCHRONIZED,LITERAL_TRY,WILDCARD_TYPE,LITERAL_WHILE" />
+    </module>
+    <module name="ModifierOrder" />
+    <module name="RedundantModifier">
+      <property name="severity" value="info" />
+      <property name="tokens"
+                value="ANNOTATION_FIELD_DEF,METHOD_DEF,VARIABLE_DEF" />
+    </module>
+    <module name="AvoidNestedBlocks" />
+    <module name="EmptyBlock">
+      <property name="tokens"
+                value="LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,STATIC_INIT,LITERAL_TRY,LITERAL_WHILE" />
+    </module>
+    <module name="LeftCurly">
+      <property name="tokens"
+                value="LITERAL_CATCH,CLASS_DEF,CTOR_DEF,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,INTERFACE_DEF,METHOD_DEF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE" />
+    </module>
+    <module name="NeedBraces">
+      <property name="tokens"
+                value="LITERAL_DO,LITERAL_ELSE,LITERAL_FOR,LITERAL_IF,LITERAL_WHILE" />
+    </module>
+    <module name="RightCurly">
+      <property name="tokens"
+                value="LITERAL_CATCH,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY" />
+    </module>
+    <module name="AvoidInlineConditionals" />
+    <module name="EmptyStatement" />
+    <module name="EqualsHashCode" />
+    <module name="HiddenField">
+      <property name="ignoreConstructorParameter" value="true" />
+      <property name="ignoreSetter" value="true" />
+    </module>
+    <module name="IllegalInstantiation" />
+    <module name="InnerAssignment" />
+    <module name="MagicNumber">
+      <property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4, 1000" />
+    </module>
+    <module name="MissingSwitchDefault" />
+    <module name="IllegalThrows"/>
+    <module name="SimplifyBooleanExpression" />
+    <module name="SimplifyBooleanReturn" />
+    <module name="HideUtilityClassConstructor" />
+    <module name="InterfaceIsType" />
+    <module name="VisibilityModifier" />
+    <module name="ArrayTypeStyle" />
+    <module name="TodoComment">
+      <property name="format" value="(?i)todo" />
+    </module>
+    <module name="UpperEll" />
+    <module name="NoWhitespaceAfter">
+      <property name="tokens"
+                value="LNOT,DOT,BNOT,DEC,UNARY_MINUS,UNARY_PLUS,INC" />
+    </module>
+    <module name="MissingDeprecated" />
+    <module name="MissingOverride" />
+    <module name="PackageAnnotation" />
     <module name="JavadocMethod">
-      <property name="scope" value="public"/>
-      <property name="allowUndeclaredRTE" value="true"/>
-      <property name="allowThrowsTagsForSubclasses" value="true"/>
-      <property name="allowMissingParamTags" value="true"/>
-      <property name="allowMissingThrowsTags" value="true"/>
-      <property name="allowMissingReturnTag" value="true"/>
-      <property name="allowMissingPropertyJavadoc" value="true"/>
+      <property name="suppressLoadErrors" value="true" />
+      <property name="tokens" value="CTOR_DEF,METHOD_DEF" />
     </module>
     <module name="JavadocStyle">
-      <property name="checkEmptyJavadoc" value="true"/>
-      <property name="checkHtml" value="false"/>
+      <property name="checkEmptyJavadoc" value="true" />
+      <property name="tokens"
+                value="CLASS_DEF,CTOR_DEF,INTERFACE_DEF,METHOD_DEF,VARIABLE_DEF" />
     </module>
-    <module name="JavadocType">
-      <property name="scope" value="public"/>
+    <module name="ConstantName" />
+    <module name="IllegalImport" />
+    <module name="FallThrough">
+      <property name="severity" value="info" />
     </module>
-    <module name="JavadocVariable"/>
-    <module name="ConstantName"/>
-    <module name="MemberName"/>
-    <module name="ModifierOrder"/>
-    <module name="TodoComment"/>
-    <module name="FinalClass"/>
-    <module name="HideUtilityClassConstructor"/>
-    <module name="InterfaceIsType"/>
-    <module name="CovariantEquals"/>
-    <module name="DefaultComesLast"/>
-    <module name="DoubleCheckedLocking"/>
-    <module name="EqualsHashCode">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    <module name="DeclarationOrder">
+      <property name="severity" value="info" />
     </module>
-    <module name="FallThrough"/>
-    <module name="MultipleVariableDeclarations"/>
+    <module name="DefaultComesLast">
+      <property name="severity" value="info" />
+    </module>
+    <module name="CovariantEquals" />
+    <module name="IllegalCatch">
+      <property name="severity" value="info" />
+    </module>
+    <module name="MultipleVariableDeclarations" />
+    <module name="PackageDeclaration">
+      <property name="severity" value="error" />
+    </module>
+    <module name="FinalClass">
+      <property name="severity" value="info" />
+    </module>
+    <module name="FinalParameters">
+      <property name="ignorePrimitiveTypes" value="true"/>
+    </module>
+    <module name="InnerTypeLast" />
+    <module name="TrailingComment" />
+  </module>
+  <module name="FileLength">
+    <property name="max" value="500" />
+  </module>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)" />
+    <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)" />
+    <property name="checkFormat" value="$1" />
+  </module>
+  <module name="NewlineAtEndOfFile">
+    <property name="lineSeparator" value="lf" />
+  </module>
+  <module name="Translation" />
+  <module name="JavadocPackage">
+    <property name="severity" value="info" />
   </module>
 </module>
