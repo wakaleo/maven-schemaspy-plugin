@@ -1,0 +1,66 @@
+language: java
+
+sudo: false
+
+env:
+  global:
+    - BASEURL=https://archive.apache.org/dist/maven/maven-3/VERSION/binaries/apache-maven-VERSION-bin.zip
+    - FILE=apache-maven-VERSION-bin.zip
+    - DIR=apache-maven-VERSION
+    - VERSION=3.5.2
+
+before_install:
+   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+         wget --no-check-certificate $(echo -n $BASEURL | sed -e 's#VERSION#'$VERSION'#g');
+         unzip -qq $(echo -n $FILE | sed -e 's#VERSION#'$VERSION'#');
+         export M2_HOME=$PWD/$(echo -n $DIR | sed -e 's#VERSION#'$VERSION'#');
+         export PATH=$M2_HOME/bin:$PATH;
+     fi
+   - echo $VERSION
+   - echo $M2_HOME
+   - java -XshowSettings:vm -version
+
+install:
+  # install without any testing to get dependencies in place
+  - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
+
+script:
+  - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true
+
+os:
+  - linux
+
+matrix:
+  fast_finish: false
+  include:
+    # additional builds
+    - os: linux
+      jdk: openjdk7
+    - os: linux
+      jdk: openjdk8
+    - os: linux
+      jdk: oraclejdk8
+      env: VERSION=3.2.5
+    - os: linux
+      jdk: oraclejdk8
+      env: VERSION=3.3.9
+    - os: linux
+      jdk: oraclejdk8
+      env: VERSION=3.5.0
+ # skip this as it is the current travis-ci linux setup
+ #   - os: linux
+ #     jdk: oraclejdk8
+ #     env: VERSION=3.5.2
+    - os: linux
+      jdk: oraclejdk8
+      env: VERSION=3.5.3
+    - os: linux
+      jdk: oraclejdk9
+  allow_failures:
+#   - env: JVM=latest
+#   - jdk: oraclejdk9
+
+
+cache:
+  directories:
+  - $HOME/.m2
