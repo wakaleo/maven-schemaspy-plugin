@@ -3,14 +3,14 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>6</version>
+        <version>9</version>
     </parent>
     <groupId>com.wakaleo.schemaspy</groupId>
-    <artifactId>maven-schemaspy-plugin</artifactId>
+    <artifactId>schemaspy-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
     <version>5.0.4-SNAPSHOT</version>
     <inceptionYear>2007</inceptionYear>
-    <name>Maven SchemaSpy Plugin</name>
+    <name>SchemaSpy Maven Plugin</name>
     <url>https://github.com/wakaleo/maven-schemaspy-plugin</url>
     <description>
         A Maven plugin designed to generate reports using the SchemaSpy command-line tool.
@@ -175,6 +175,10 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
+                <configuration>
+                    <source>${project.build.sourceVersion}</source>
+                    <target>${project.build.targetVersion}</target>
+                </configuration>
             </plugin>
             <!-- Define the Main class of the output JAR file -->
             <plugin>
@@ -229,7 +233,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.21.0</version>
             </plugin>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -254,7 +257,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ftp</artifactId>
-                <version>1.0-beta-6</version>
+                <version>3.0.0</version>
             </extension>
         </extensions>
     </build>
