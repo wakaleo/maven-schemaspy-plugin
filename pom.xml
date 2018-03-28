@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
     <groupId>com.wakaleo.schemaspy</groupId>
     <artifactId>maven-schemaspy-plugin</artifactId>
