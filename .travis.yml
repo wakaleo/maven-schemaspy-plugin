@@ -7,7 +7,7 @@ env:
     - BASEURL=https://archive.apache.org/dist/maven/maven-3/VERSION/binaries/apache-maven-VERSION-bin.zip
     - FILE=apache-maven-VERSION-bin.zip
     - DIR=apache-maven-VERSION
-    - VERSION=3.5.2
+    - VERSION=3.5.3
 
 before_install:
    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -47,18 +47,15 @@ matrix:
     - os: linux
       jdk: oraclejdk8
       env: VERSION=3.5.0
- # skip this as it is the current travis-ci linux setup
- #   - os: linux
- #     jdk: oraclejdk8
- #     env: VERSION=3.5.2
     - os: linux
       jdk: oraclejdk8
-      env: VERSION=3.5.3
+      env: VERSION=3.5.2
     - os: linux
       jdk: oraclejdk9
   allow_failures:
 #   - env: JVM=latest
-#   - jdk: oraclejdk9
+   - jdk: oraclejdk9
+   - jdk: openjdk7
 
 
 cache:
