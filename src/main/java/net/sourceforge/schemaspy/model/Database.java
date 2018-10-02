@@ -155,7 +155,6 @@ public class Database {
          * @param clazz table or view
          * @param include
          * @param exclude
-         * @param verbose
          * @param validTypes
          */
         NameValidator(String clazz, Pattern include, Pattern exclude, String[] validTypes) {

@@ -45,7 +45,7 @@ public class JDBCHelper {
      * @param jdbcUrl a valid JDBC url for the target database
      * @return the type of the database for this JDBC URL
      */
-    public final String extractDatabaseType(final String jdbcUrl) {
+    public static final String extractDatabaseType(final String jdbcUrl) {
 
         String result = null;
         for (String[] databaseTypeEntry : DATABASE_TYPES_MAP) {

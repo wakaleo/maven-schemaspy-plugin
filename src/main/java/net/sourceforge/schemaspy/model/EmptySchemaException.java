@@ -28,8 +28,6 @@ public class EmptySchemaException extends RuntimeException {
 
     /**
      * When a message is sufficient
-     *
-     * @param msg
      */
     public EmptySchemaException() {
         super();

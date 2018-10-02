@@ -136,7 +136,6 @@ public class Config
      * Construct a configuration from an array of options (e.g. from a command
      * line interface).
      *
-     * @param options
      */
     public Config(String[] argv)
     {
@@ -164,7 +163,6 @@ public class Config
      *
      * Useful for things like selecting a specific configuration in a UI.
      *
-     * @param config
      */
     public static void setInstance(Config config) {
         instance = config;
@@ -214,7 +212,6 @@ public class Config
     /**
      * Set the path to Graphviz so we can find dot to generate ER diagrams
      *
-     * @param graphvizDir
      */
     public void setGraphvizDir(String graphvizDir) {
         if (graphvizDir.endsWith("\""))
@@ -225,8 +222,6 @@ public class Config
 
     /**
      * Set the path to Graphviz so we can find dot to generate ER diagrams
-     *
-     * @param graphvizDir
      */
     public void setGraphvizDir(File graphvizDir) {
         this.graphvizDir = graphvizDir;
@@ -234,12 +229,11 @@ public class Config
 
     /**
      * Return the path to Graphviz (used to find the dot executable to run to
-     * generate ER diagrams).<p/>
+     * generate ER diagrams).
      *
-     * Returns {@link #getDefaultGraphvizPath()} if a specific Graphviz path
+     * Returns path to Graphviz if a specific Graphviz path
      * was not specified.
      *
-     * @return
      */
     public File getGraphvizDir() {
         if (graphvizDir == null) {
@@ -262,7 +256,6 @@ public class Config
      * If a directory is specified then it is expected to contain files
      * matching the pattern <code>[schema].meta.xml</code>.
      * For databases that don't have schema substitute database for schema.
-     * @param meta
      */
     public void setMeta(String meta) {
         this.meta = meta;
@@ -364,7 +357,7 @@ public class Config
      * User used to connect to the database.
      * Required unless single sign-on is enabled
      * (see {@link #setSingleSignOn(boolean)}).
-     * @return
+
      */
     public String getUser() {
         if (user == null) {
@@ -407,7 +400,7 @@ public class Config
 
     /**
      * @see #setPassword(String)
-     * @return
+
      */
     public String getPassword() {
         if (password == null)
@@ -425,7 +418,7 @@ public class Config
 
     /**
      * @see #setPromptForPasswordEnabled(boolean)
-     * @return
+
      */
     public boolean isPromptForPasswordEnabled() {
         if (promptForPassword == null) {
@@ -476,7 +469,7 @@ public class Config
      * Returns a {@link Properties} populated either from the properties file specified
      * by {@link #setConnectionPropertiesFile(String)}, the properties specified by
      * {@link #setConnectionProperties(String)} or not populated.
-     * @return
+
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -597,7 +590,7 @@ public class Config
 
     /**
      * @see #setFontSize(int)
-     * @return
+
      */
     public int getFontSize() {
         if (fontSize == null) {
@@ -740,7 +733,7 @@ public class Config
     /**
      * @see #setRailsEnabled(boolean)
      *
-     * @return
+
      */
     public boolean isRailsEnabled() {
         if (railsEnabled == null)
@@ -780,7 +773,7 @@ public class Config
 
     /**
      * @see #setNumRowsEnabled(boolean)
-     * @return
+
      */
     public boolean isNumRowsEnabled() {
         if (numRowsEnabled == null)
@@ -802,7 +795,7 @@ public class Config
 
     /**
      * @see #setViewsEnabled(boolean)
-     * @return
+
      */
     public boolean isViewsEnabled() {
         if (viewsEnabled == null)
@@ -815,7 +808,7 @@ public class Config
      * Returns <code>true</code> if metering should be embedded in
      * the generated pages.<p/>
      * Defaults to <code>false</code> (disabled).
-     * @return
+
      */
     public boolean isMeterEnabled() {
         if (meterEnabled == null)
@@ -836,7 +829,7 @@ public class Config
 
     /**
      * See {@link #setColumnExclusions(String)}
-     * @return
+
      */
     public Pattern getColumnExclusions() {
         if (columnExclusions == null) {
@@ -854,7 +847,7 @@ public class Config
      * Set the columns to exclude from relationship diagrams where the specified
      * columns aren't directly referenced by the focal table.
      *
-     * @param columnExclusions regular expression of the columns to
+     * @param fullColumnExclusions regular expression of the columns to
      *        exclude
      */
     public void setIndirectColumnExclusions(String fullColumnExclusions) {
@@ -864,7 +857,7 @@ public class Config
     /**
      * @see #setIndirectColumnExclusions(String)
      *
-     * @return
+
      */
     public Pattern getIndirectColumnExclusions() {
         if (indirectColumnExclusions == null) {
@@ -889,7 +882,7 @@ public class Config
     /**
      * Get the regex {@link Pattern} for which tables to include in the analysis.
      *
-     * @return
+
      */
     public Pattern getTableInclusions() {
         if (tableInclusions == null) {
@@ -909,7 +902,7 @@ public class Config
 
     /**
      * Set the tables to exclude as a regular expression
-     * @param tableInclusions
+     * @param tableExclusions
      */
     public void setTableExclusions(String tableExclusions) {
         this.tableExclusions = Pattern.compile(tableExclusions);
@@ -918,7 +911,7 @@ public class Config
     /**
      * Get the regex {@link Pattern} for which tables to exclude from the analysis.
      *
-     * @return
+
      */
     public Pattern getTableExclusions() {
         if (tableExclusions == null) {
@@ -937,7 +930,7 @@ public class Config
     }
 
     /**
-     * @return
+
      */
     public List<String> getSchemas() {
         if (schemas == null) {
@@ -984,7 +977,7 @@ public class Config
      * Returns an implementation of {@link SqlFormatter SQL formatter} to use to format
      * SQL into HTML.  The default implementation is {@link DefaultSqlFormatter}.
      *
-     * @return
+
      * @throws InvalidConfigurationException if unable to instantiate an instance
      */
     @SuppressWarnings("unchecked")
@@ -1023,7 +1016,7 @@ public class Config
      * Returns true if we're evaluating a bunch of schemas in one go and
      * at this point we're evaluating a specific schema.
      *
-     * @return boolean
+ boolean
      */
     public boolean isOneOfMultipleSchemas() {
         // set by MultipleSchemaAnalyzer
@@ -1062,7 +1055,7 @@ public class Config
 
     /**
      * @see #setRenderer(String)
-     * @return
+
      */
     public String getRenderer() {
         String renderer = pullParam("-renderer");
@@ -1126,7 +1119,7 @@ public class Config
      * Defaults to <code>true</code>.<p>
      * <b>Please do not disable ads unless absolutely necessary</b>.
      *
-     * @return
+
      */
     public void setAdsEnabled(boolean enabled) {
         adsEnabled = enabled;
@@ -1136,7 +1129,7 @@ public class Config
      * Returns <code>true</code> if we should display advertisements.<p>
      * <b>Please do not disable ads unless absolutely necessary</b>.
      *
-     * @return
+
      */
     public boolean isAdsEnabled() {
         if (adsEnabled == null) {
@@ -1187,7 +1180,7 @@ public class Config
      * Returns the level of logging to perform.
      * See {@link #setLogLevel(String)}.
      *
-     * @return
+
      */
     public Level getLogLevel() {
         if (logLevel == null) {
@@ -1201,7 +1194,7 @@ public class Config
      * Returns <code>true</code> if the options indicate that the user wants
      * to see some help information.
      *
-     * @return
+
      */
     public boolean isHelpRequired() {
         return helpRequired;
@@ -1249,7 +1242,7 @@ public class Config
 
     /**
      * @param type
-     * @return
+
      * @throws IOException
      * @throws InvalidConfigurationException if db properties are incorrectly formed
      */
@@ -1370,7 +1363,7 @@ public class Config
      * Returns a {@link Properties} populated with the contents of <code>bundle</code>
      *
      * @param bundle ResourceBundle
-     * @return Properties
+ Properties
      */
     public static Properties asProperties(ResourceBundle bundle) {
         Properties props = new Properties();
@@ -1388,7 +1381,7 @@ public class Config
      * null if the parameter isn't in the list and removes it if it is.
      *
      * @param paramId
-     * @return
+
      */
     private String pullParam(String paramId) {
         return pullParam(paramId, false, false);
@@ -1402,7 +1395,7 @@ public class Config
      * @param paramId
      * @param required
      * @param dbTypeSpecific
-     * @return
+
      * @throws MissingRequiredParameterException
      */
     private String pullParam(String paramId, boolean required, boolean dbTypeSpecific)
@@ -1449,7 +1442,7 @@ public class Config
      *
      * @param args
      *            List
-     * @return List
+ List
      */
     protected List<String> fixupArgs(List<String> args) {
         List<String> expandedArgs = new ArrayList<String>();
@@ -1580,7 +1573,7 @@ public class Config
      * Used for properties that are common to most db's, but aren't required.
      *
      * @param paramName
-     * @return
+
      */
     public String getParam(String paramName) {
         try {
@@ -1604,7 +1597,7 @@ public class Config
      * Return all of the configuration options as a List of Strings, with
      * each parameter and its value as a separate element.
      *
-     * @return
+
      * @throws IOException
      */
     public List<String> asList() throws IOException {

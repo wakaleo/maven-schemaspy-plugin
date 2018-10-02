@@ -317,11 +317,6 @@ public class SchemaSpyReport extends AbstractMavenReport {
      */
     SchemaAnalyzer analyzer = new SchemaAnalyzer();
 
-    /**
-     * Utility class to help determine the type of the target database.
-     */
-    private JDBCHelper jdbcHelper = new JDBCHelper();
-
     protected void setSchemaAnalyzer(SchemaAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
@@ -412,7 +407,7 @@ public class SchemaSpyReport extends AbstractMavenReport {
         List<String> argList = new ArrayList<String>();
 
         if ((jdbcUrl != null) && (databaseType == null)) {
-            databaseType = jdbcHelper.extractDatabaseType(jdbcUrl);
+            databaseType = JDBCHelper.extractDatabaseType(jdbcUrl);
         }
         addToArguments(argList, "-dp", pathToDrivers);
         addToArguments(argList, "-db", database);
