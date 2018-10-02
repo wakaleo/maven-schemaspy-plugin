@@ -21,7 +21,7 @@ import java.util.Locale;
  * The SchemaSpy Maven plugin report.
  *
  * @author John Smart
- * @mainpage The SchemaSpy Maven plugin This plugin is designed to generate
+ *           The SchemaSpy Maven plugin This plugin is designed to generate
  *           SchemaSpy reports for a Maven web site.
  *
  *           SchemaSpy (http://schemaspy.sourceforge.net) does not need to be

@@ -18,7 +18,7 @@ package com.wakaleo.schemaspy.util;
 public class JDBCHelper {
 
     /** Creates a new instance of JDBCHelper. */
-    public JDBCHelper() {
+    private JDBCHelper() {
     }
 
     /**

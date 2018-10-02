@@ -204,7 +204,7 @@
                 <configuration>
                     <filesets>
                         <!--<fileset>-->
-                            <!--<directory>${basedir}/testdb</directory>-->
+                        <!--<directory>${basedir}/testdb</directory>-->
                         <!--</fileset>-->
                         <fileset>
                             <directory>${basedir}</directory>
@@ -310,6 +310,20 @@
                                 <exclude>**/*Test.class</exclude>
                             </excludes>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>ru.concerteza.buildnumber</groupId>
+                <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+                <version>1.2.10</version>
+                <executions>
+                    <execution>
+                        <id>git-buildnumber</id>
+                        <goals>
+                            <goal>extract-buildnumber</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
                     </execution>
                 </executions>
             </plugin>
