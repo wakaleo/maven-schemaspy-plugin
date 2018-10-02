@@ -22,9 +22,21 @@
     </prerequisites>
     <licenses>
         <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <name>GNU Lesser General Public License, Version 2.1</name>
+            <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html</url>
             <distribution>repo</distribution>
+            <comments>
+                For those part of the code derived from the SchemaSpy project
+                (http://schemaspy.sourceforge.net), net.sourceforge.schemaspy packages.
+            </comments>
+        </license>
+        <license>
+            <name>MIT License</name>
+            <url>https://mit-license.org/</url>
+            <distribution>repo</distribution>
+            <comments>
+                For those parts of the code that are NOT in the net.sourceforge.schemaspy packages.
+            </comments>
         </license>
     </licenses>
     <organization>
