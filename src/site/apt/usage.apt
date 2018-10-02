@@ -13,20 +13,7 @@ Usage
   database type), and by default will generate a report in the 
   'target/site/schemaspy' directory. 
   
-  The SchemaSpy plugin is currently hosted in the Wakaleo repository. To use
-  it, you need to add this repository to the <<<\<pluginRepositories\>>>>   
-  section of your pom: 
-  
-+-----+
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Wakaleo Repository</id>
-            <url>http://www.wakaleo.com/maven/repos/</url>
-        </pluginRepository>
-    </pluginRepositories>
-+-----+  
-  
-  To include a SchemaSpy report in your project site, 
+  To include a SchemaSpy report in your project site,
   set the following in the  <<<\<reporting\>>>> section of your pom:
 
 +-----+
@@ -35,8 +22,8 @@ Usage
   <reporting>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.schemaspy</groupId>
-            <artifactId>maven-schemaspy-plugin</artifactId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
+            <artifactId>schemaspy-maven-plugin</artifactId>
             <version>${schemaspy.plugin.version}</version>
             <configuration>
                 <databaseType>mysql</databaseType>
@@ -51,37 +38,6 @@ Usage
 </project>
 +-----+
 
-  Or, in Maven 3:
-
-+-----+
-<project>
-  ...
-  <build>
-    <plugins>
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-site-plugin</artifactId>
-	        <version>3.0-beta-3</version>
-	        <configuration>
-	            <reportPlugins>
-	                <plugin>
-	                    <groupId>com.wakaleo.schemaspy</groupId>
-	                    <artifactId>maven-schemaspy-plugin</artifactId>
-	                    <version>${schemaspy.plugin.version}</version>
-	                    <configuration>
-	                        <databaseType>orathin</databaseType>
-	                        <database>${db.database}</database>
-	                        <host>${db.host}</host>
-	                        <user>${db.username}</user>
-	                        <password>${db.password}</password>
-	                        <port>${db.port}</port>
-	                    </configuration>
-	                </plugin>
-	            </reportPlugins>
-	        </configuration>
-	    </plugin>
-	 ...
-+-----+
 
 Configuration
 
@@ -93,18 +49,18 @@ Configuration
    * MySQL
    * HSQLDB
    * PostgreSQL
-   * MS SQLServer using the JTDS driver (mssql-jtds)
-  Others, such as DB2, Oracle, MS SQL Server (if using the Microsoft driver) 
-  and Firebird, don't have drivers in the repositories. 
+   * MS SQLServer using the Microsoft JDBC driver (mssql-jdbc)
+  Others, such as DB2, Oracle and Firebird, don't have drivers in the repositories.
 
-  In this case, add a dependency for the driver you need to the plugin configuration in the <<<\<build\>>>> section of your pom.xml:
+  In this case, add a dependency for the driver you need to the plugin configuration in the <<<\<build\>>>>
+  section of your pom.xml:
   
 +-----+
         <build>
           <plugins>
 			<plugin>
-				<groupId>com.wakaleo.schemaspy</groupId>
-				<artifactId>maven-schemaspy-plugin</artifactId>
+				<groupId>nl.geodienstencentrum.maven</groupId>
+				<artifactId>schemaspy-maven-plugin</artifactId>
 				<version>${schemaspy.plugin.version}</version>
 				<dependencies>
 					<dependency>
@@ -129,8 +85,8 @@ Configuration
   <reporting>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.schemaspy</groupId>
-            <artifactId>maven-schemaspy-plugin</artifactId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
+            <artifactId>schemaspy-maven-plugin</artifactId>
             <version>1.0</version>
             <configuration>
               <databaseType>mysql</databaseType>
@@ -153,7 +109,7 @@ Configuration
 </project>
 +-----+
 
-  For MSSQL Server, the mssql-jtds will use the open source JTDS driver for this database.
+  For MSSQL Server, the plugin will use the open source Microsoft driver mssql-jdbc.
 
   Rather than defining the database and host names and letting SchemaSpy
   build the URL, you can alternatively specify the complete JDBC URL
@@ -168,8 +124,8 @@ Configuration
   <reporting>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.schemaspy</groupId>
-            <artifactId>maven-schemaspy-plugin</artifactId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
+            <artifactId>schemaspy-maven-plugin</artifactId>
             <version>1.0</version>
             <configuration>
               <databaseType>mysql</databaseType>
@@ -213,8 +169,8 @@ Configuration
   <reporting>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.schemaspy</groupId>
-            <artifactId>maven-schemaspy-plugin</artifactId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
+            <artifactId>schemaspy-maven-plugin</artifactId>
             <version>${schemaspy.plugin.version}</version>
             <configuration>
               <database>testdb</database>     

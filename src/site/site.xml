@@ -1,22 +1,60 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<project>
-  <bannerLeft>
-    <name>Wakaleo Consulting</name>
-    <src>http://www.wakaleo.com/templates/jazibal/images/logo-default.jpg</src>
-    <href>http://www.wakaleo.com</href>
-  </bannerLeft>
-  <body>
-    <links>
-      <item name="Schemaspy" href="http://schemaspy.sourceforge.net/"/>
-      <item name="Maven" href="http://maven.apache.org/"/>
-    </links>      
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Goals" href="plugin-info.html"/>
-      <item name="Usage" href="usage.html"/>
-      <item name="FAQ" href="faq.html"/>      
-    </menu>
-    <menu ref="reports" />
-  </body>
+<project xmlns="http://maven.apache.org/DECORATION/1.7.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd"
+         name="${project.name} ${project.version}">
+    <publishDate position="left" format="dd-MMMM-yyyy"/>
+    <version position="left"/>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.6</version>
+    </skin>
+    <bannerLeft>
+        <name>${project.organization.name}</name>
+        <src>images/logo.png</src>
+        <href>${project.organization.url}</href>
+    </bannerLeft>
+    <bannerRight>
+        <name>${project.name}</name>
+        <href>${project.url}</href>
+    </bannerRight>
+    <poweredBy>
+        <logo href="https://travis-ci.org/GeoDienstenCentrum/${project.artifactId}"
+              img="https://travis-ci.org/GeoDienstenCentrum/${project.artifactId}.svg?branch=master"
+              name="Travis-CI Build status (master branch)"/>
+        <logo href="https://ci.appveyor.com/project/mprins/${project.artifactId}"
+              img="https://ci.appveyor.com/api/projects/status/qxc604b7o0rwxsel/branch/master?svg=true"
+              name="AppVeyor-CI Build status (master branch)"/>
+        <logo href="https://coveralls.io/github/GeoDienstenCentrum/${project.artifactId}?branch=master"
+              img="https://coveralls.io/repos/github/GeoDienstenCentrum/${project.artifactId}/badge.svg?branch=master"
+              name="Coverage status (master branch)"/>
+        <logo href="https://maven-badges.herokuapp.com/maven-central/${project.groupId}/${project.artifactId}/"
+              img="https://maven-badges.herokuapp.com/maven-central/${project.groupId}/${project.artifactId}/badge.svg"
+              name="Maven Central"/>
+        <logo href="http://isitmaintained.com/project/GeoDienstenCentrum/${project.artifactId}/"
+              img="http://isitmaintained.com/badge/open/GeoDienstenCentrum/${project.artifactId}.svg"
+              name="Percentage of issues still open"/>
+        <logo href="http://isitmaintained.com/project/GeoDienstenCentrum/${project.artifactId}/"
+              img="http://isitmaintained.com/badge/resolution/GeoDienstenCentrum/${project.artifactId}.svg"
+              name="Average time to resolve an issue"/>
+    </poweredBy>
+    <body>
+        <head>
+            <![CDATA[<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />]]>
+            <![CDATA[<link rel="icon" href="favicon.ico" type="image/x-icon" />]]>
+            <![CDATA[<link rel="meta" title="DOAP" href="${project.url}/doap_${project.artifactId}.rdf" type="application/rdf+xml" />]]>
+        </head>
+        <links>
+            <item name="Schemaspy" href="http://schemaspy.sourceforge.net/"/>
+            <item name="Maven" href="http://maven.apache.org/"/>
+        </links>
+        <menu name="Overview">
+            <item name="Introduction" href="index.html"/>
+            <item name="Goals" href="plugin-info.html"/>
+            <item name="Usage" href="usage.html"/>
+            <item name="FAQ" href="faq.html"/>
+        </menu>
+        <menu ref="reports"/>
+    </body>
 </project>
