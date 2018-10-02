@@ -30,14 +30,14 @@ under the License.
     <finalName>test-plugin-configuration</finalName>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.maven.plugin.schemaspy</groupId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>
               <databaseType>derby</databaseType>
-              <database>testdb</database>
+              <database>target/testdb</database>
               <outputDirectory>target/reports/full-test</outputDirectory>
-              <pathToDrivers>src/test/resources/lib/derby-10.1.2.1.jar</pathToDrivers>     
+              <pathToDrivers>src/test/resources/lib/derby-10.14.2.0.jar</pathToDrivers>
               <commentsInitiallyDisplayed>true</commentsInitiallyDisplayed>
               <noImplied>true</noImplied>
               <noHtml>false</noHtml>

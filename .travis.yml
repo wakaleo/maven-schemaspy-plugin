@@ -27,9 +27,6 @@ matrix:
   # additional builds
   - os: linux
     jdk: oraclejdk8
-    env: VERSION=3.2.5
-  - os: linux
-    jdk: oraclejdk8
     env: VERSION=3.3.9
   - os: linux
     jdk: oraclejdk8
@@ -40,20 +37,14 @@ matrix:
   - os: linux
     jdk: oraclejdk8
     env: VERSION=3.5.3
-  #  - os: linux
-  #    jdk: oraclejdk8
-  #    env: VERSION=3.5.4
-  #  - os: linux
-  #    jdk: oraclejdk9
-  - os: osx
-    osx_image: xcode10
-    env: JVM=latest
-  - os: osx
-    osx_image: xcode9.3
-  - os: osx
-    osx_image: xcode9.4
+  #- os: osx
+  #  osx_image: xcode10
+  #  env: JVM=latest
+  #- os: osx
+  #  osx_image: xcode9.3
+  #- os: osx
+  #  osx_image: xcode9.4
   allow_failures:
-  - jdk: oraclejdk11
   - jdk: oraclejdk-ea
 
 before_install:
@@ -78,8 +69,6 @@ script:
   - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
       mvn javadoc:test-javadoc;
     fi
-
-
 
 cache:
   directories:
