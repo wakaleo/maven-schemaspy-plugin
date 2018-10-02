@@ -31,8 +31,8 @@ under the License.
     <plugins>
         <plugin>
             <groupId>com.wakaleo.schemaspy</groupId>
-            <artifactId>maven-schemaspy-plugin</artifactId>
-            <version>1.0</version>
+            <artifactId>schemaspy-maven-plugin</artifactId>
+            <version>@project.version@</version>
             <configuration>
               <outputDirectory>target/reports/test</outputDirectory>
               <databaseType>derby</databaseType>
