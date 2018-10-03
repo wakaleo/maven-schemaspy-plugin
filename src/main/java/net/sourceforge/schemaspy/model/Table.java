@@ -157,14 +157,6 @@ public class Table implements Comparable<Table> {
     }
 
     /**
-     * @param rs ResultSet from {@link DatabaseMetaData#getImportedKeys(String, String, String)}
-     * rs.getString("FK_NAME");
-     * rs.getString("FKCOLUMN_NAME");
-     * rs.getString("PKTABLE_SCHEM");
-     * rs.getString("PKTABLE_NAME");
-     * rs.getString("PKCOLUMN_NAME");
-     * @param tables Map
-     * @param db
      * @throws SQLException
      */
     protected void addForeignKey(String fkName, String fkColName,
@@ -917,7 +909,6 @@ public class Table implements Comparable<Table> {
      *
      * returns -1 if unable to successfully fetch the row count
      *
-     * @param db Database
      * @return long
      * @throws SQLException
      */
@@ -1040,8 +1031,7 @@ public class Table implements Comparable<Table> {
     }
 
     /**
-     * Same as {@link #connectForeignKeys(Map, Database, Properties, Pattern, Pattern)},
-     * but uses XML-based metadata
+     * uses XML-based metadata.
      *
      * @param tableMeta
      * @param tables

@@ -26,10 +26,8 @@ public class JDBCHelperTest  {
             { "jdbc:firebirdsql://server:9999/testdb", "firebirdsql" },
             { "jdbc:hsqldb:hsql://localhost/testdb", "hsqldb" },
             { "jdbc:hsqldb:hsql://server:9999/testdb", "hsqldb" },
-            { "jdbc:informix-sqli://localhost/testdb:INFORMIXSERVER=server",
-                    "informix-sqli" },
-            { "jdbc:microsoft:sqlserver://server:9999;databaseName=testdb",
-                    "mssql" },
+            { "jdbc:informix-sqli://localhost/testdb:INFORMIXSERVER=server", "informix-sqli" },
+            { "jdbc:microsoft:sqlserver://server:9999;databaseName=testdb", "mssql" },
             { "jdbc:jtds://server:9999/testdb", "mssql-jtds" },
             { "jdbc:mysql://localhost/testdb", "mysql" },
             { "jdbc:oracle:oci8:@testdb", "ora" },
@@ -45,12 +43,10 @@ public class JDBCHelperTest  {
     public void testExtractDatabaseType() {
         System.out.println("extractDatabaseType");
 
-        JDBCHelper instance = new JDBCHelper();
-
         for (String[] testDataEntry : DATABASE_TYPES_TEST_DATA) {
             String jdbcUrl = testDataEntry[0];
             String expectedDatabaseType = testDataEntry[1];
-            String result = instance.extractDatabaseType(jdbcUrl);
+            String result = JDBCHelper.extractDatabaseType(jdbcUrl);
             assertEquals(expectedDatabaseType, result);
         }
     }

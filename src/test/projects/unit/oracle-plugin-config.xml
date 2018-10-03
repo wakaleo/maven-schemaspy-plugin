@@ -30,7 +30,7 @@ under the License.
     <finalName>test-plugin-configuration</finalName>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.maven.plugin.schemaspy</groupId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>

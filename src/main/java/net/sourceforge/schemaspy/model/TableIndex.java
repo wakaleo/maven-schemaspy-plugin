@@ -140,8 +140,6 @@ public class TableIndex implements Comparable<TableIndex> {
     }
 
     /**
-     * @param object
-     * @return
      */
     public int compareTo(TableIndex other) {
         if (isPrimaryKey() && !other.isPrimaryKey())

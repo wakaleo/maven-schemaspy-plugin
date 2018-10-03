@@ -4,10 +4,48 @@ sudo: false
 
 env:
   global:
-    - BASEURL=https://archive.apache.org/dist/maven/maven-3/VERSION/binaries/apache-maven-VERSION-bin.zip
-    - FILE=apache-maven-VERSION-bin.zip
-    - DIR=apache-maven-VERSION
-    - VERSION=3.5.3
+  - BASEURL=https://archive.apache.org/dist/maven/maven-3/VERSION/binaries/apache-maven-VERSION-bin.zip
+  - FILE=apache-maven-VERSION-bin.zip
+  - DIR=apache-maven-VERSION
+  - VERSION=3.5.4
+
+os:
+- linux
+
+jdk:
+- oraclejdk8
+- oraclejdk9
+- oraclejdk10
+- oraclejdk11
+- oraclejdk-ea
+- openjdk8
+
+
+matrix:
+  fast_finish: true
+  include:
+  # additional builds
+  - os: linux
+    jdk: oraclejdk8
+    env: VERSION=3.3.9
+  - os: linux
+    jdk: oraclejdk8
+    env: VERSION=3.5.0
+  - os: linux
+    jdk: oraclejdk8
+    env: VERSION=3.5.2
+  - os: linux
+    jdk: oraclejdk8
+    env: VERSION=3.5.3
+  #- os: osx
+  #  osx_image: xcode10
+  #  env: JVM=latest
+  #- os: osx
+  #  osx_image: xcode9.3
+  #- os: osx
+  #  osx_image: xcode9.4
+  allow_failures:
+  - jdk: oraclejdk-ea
 
 before_install:
    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -21,42 +59,16 @@ before_install:
    - java -XshowSettings:vm -version
 
 install:
-  # install without any testing to get dependencies in place
   - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
 
 script:
   - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true
-
-os:
-  - linux
-
-matrix:
-  fast_finish: false
-  include:
-    # additional builds
-    - os: linux
-      jdk: openjdk7
-    - os: linux
-      jdk: openjdk8
-    - os: linux
-      jdk: oraclejdk8
-      env: VERSION=3.2.5
-    - os: linux
-      jdk: oraclejdk8
-      env: VERSION=3.3.9
-    - os: linux
-      jdk: oraclejdk8
-      env: VERSION=3.5.0
-    - os: linux
-      jdk: oraclejdk8
-      env: VERSION=3.5.2
-    - os: linux
-      jdk: oraclejdk9
-  allow_failures:
-#   - env: JVM=latest
-   - jdk: oraclejdk9
-   - jdk: openjdk7
-
+  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
+      mvn javadoc:javadoc;
+    fi
+  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
+      mvn javadoc:test-javadoc;
+    fi
 
 cache:
   directories:

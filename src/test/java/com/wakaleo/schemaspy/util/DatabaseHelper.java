@@ -36,7 +36,7 @@ public class DatabaseHelper {
                 try {
                     Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
                     java.sql.Connection connection = java.sql.DriverManager
-                            .getConnection("jdbc:derby:testdb;create=true");
+                            .getConnection("jdbc:derby:target/testdb;create=true");
 
                     input = new BufferedReader(new FileReader(sqlCreateScript));
                     String line = null;

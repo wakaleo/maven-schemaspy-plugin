@@ -1,0 +1,40 @@
+init:
+  - git config --global core.autocrlf true
+  - git config --global core.safecrlf true
+
+clone_folder: C:\projects\schemaspy-maven-plugin
+
+# can't use shallow clone because we need to convert line endings in test expectations
+shallow_clone: false
+
+version: "{build}-{branch}"
+
+skip_tags: true
+
+install:
+  - cmd: echo %PATH%
+  - cmd: java -XshowSettings:vm -version
+  - cd C:\projects\schemaspy-maven-plugin
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
+  - ps: .\.appveyor\set-maven-proxy.ps1
+  - mvn install -Dmaven.test.skip=true -B -V -fae -e
+
+build: off
+
+test_script:
+  - cd C:\projects\schemaspy-maven-plugin
+  - mvn -e -fae -B -Dfailsafe.useFile=false clean test verify
+
+environment:
+
+  matrix:
+    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+
+cache:
+  - C:\Users\appveyor\.m2\repository -> pom.xml

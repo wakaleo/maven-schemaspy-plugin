@@ -30,12 +30,12 @@ under the License.
     <finalName>test-plugin-configuration</finalName>
     <plugins>
         <plugin>
-            <groupId>com.wakaleo.schemaspy</groupId>
+            <groupId>nl.geodienstencentrum.maven</groupId>
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>
               <outputDirectory>target/reports/jdbcurl-test</outputDirectory>
-              <database>testdb</database>     
+              <database>target/testdb</database>
               <jdbcUrl>jdbc:derby:testdb</jdbcUrl>   
               <singleSignOn>true</singleSignOn>
               <noSchema>true</noSchema>

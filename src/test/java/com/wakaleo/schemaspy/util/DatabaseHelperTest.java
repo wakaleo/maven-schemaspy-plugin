@@ -27,7 +27,7 @@ public class DatabaseHelperTest {
         DatabaseHelper.setupDatabase("src/test/resources/sql/testdb.sql");
 
         java.sql.Connection connection = java.sql.DriverManager
-                .getConnection("jdbc:derby:testdb");
+                .getConnection("jdbc:derby:target/testdb");
 
         ResultSet rs = connection.createStatement().executeQuery(
                 "select * from employee");
