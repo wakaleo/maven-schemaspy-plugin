@@ -593,6 +593,21 @@
             </build>
         </profile>
         <profile>
+            <id>appveyor</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/MSSQLExternalDatabaseTest.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>release</id>
             <properties>
                 <debug>false</debug>
