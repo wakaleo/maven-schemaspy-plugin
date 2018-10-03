@@ -1,9 +1,9 @@
-DROP TABLE salesorder;
-DROP TABLE customer;
-DROP TABLE address;
-DROP TABLE item;
-DROP TABLE product_range;
-DROP TABLE employee;
+DROP TABLE IF EXISTS salesorder;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS product_range;
+DROP TABLE IF EXISTS employee;
 CREATE TABLE employee ( employee_id INTEGER PRIMARY KEY, firstname VARCHAR(256), lastname VARCHAR(256), address VARCHAR(256), city VARCHAR(256), postcode VARCHAR(256), salary NUMERIC(10,2), company_id INTEGER );
 CREATE TABLE product_range ( product_range_id INTEGER PRIMARY KEY, name VARCHAR(256));
 CREATE TABLE item ( item_id INTEGER PRIMARY KEY, name VARCHAR(256), price NUMERIC(10,2), product_range_id INTEGER,  FOREIGN KEY (product_range_id) REFERENCES product_range);

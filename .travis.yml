@@ -1,6 +1,6 @@
 language: java
 
-sudo: false
+sudo: required
 
 addons:
   postgresql: 9.6
@@ -64,7 +64,7 @@ before_install:
      fi
    - echo $VERSION
    - echo $M2_HOME
-   - java -XshowSettings:vm -showversion -Xshare:dump
+   - sudo java -XshowSettings:vm -showversion -Xshare:dump
 
 install:
   - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
