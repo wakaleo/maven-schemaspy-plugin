@@ -36,6 +36,7 @@ under the License.
             <configuration>
               <databaseType>mysql</databaseType>
               <database>test</database>
+              <schema>test</schema>
               <user>root</user>
               <host>127.0.0.1</host>
               <outputDirectory>target/reports/mysql-test</outputDirectory>

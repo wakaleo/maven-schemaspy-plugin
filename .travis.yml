@@ -64,19 +64,19 @@ before_install:
      fi
    - echo $VERSION
    - echo $M2_HOME
-   - sudo java -XshowSettings:vm -showversion -Xshare:dump
+#   - sudo java -XshowSettings:vm -showversion -Xshare:dump
 
 install:
   - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
 
 before_script:
   - psql -c 'create database test;' -U postgres
-  - psql -U postgres -d test -f ./src/test/resources/sql/postgresql.sql
+  - psql -U postgres -d test -f ./src/test/resources/sql/pgsql.sql
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
   - mysql test < ./src/test/resources/sql/mysql.sql
 
 script:
-  - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Pfull-tests
+  - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Ptravis
   - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
       mvn javadoc:javadoc;
     fi

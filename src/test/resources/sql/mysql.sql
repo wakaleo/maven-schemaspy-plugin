@@ -1,3 +1,5 @@
+USE test;
+
 DROP TABLE IF EXISTS salesorder;
 
 DROP TABLE IF EXISTS customer;

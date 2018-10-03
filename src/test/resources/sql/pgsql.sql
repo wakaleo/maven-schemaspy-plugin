@@ -10,10 +10,9 @@ DROP TABLE IF EXISTS product_range;
 
 DROP TABLE IF EXISTS employee;
 
-GO
 CREATE TABLE employee
   (
-     employee_id INTEGER PRIMARY KEY,
+     employee_id SERIAL PRIMARY KEY,
      firstname   VARCHAR(256),
      lastname    VARCHAR(256),
      address     VARCHAR(256),
@@ -25,13 +24,14 @@ CREATE TABLE employee
 
 CREATE TABLE product_range
   (
-     product_range_id INTEGER PRIMARY KEY,
-     NAME             VARCHAR(256)
+     product_range_id SERIAL PRIMARY KEY,
+     name             VARCHAR(256)
   );
+
 CREATE TABLE item
   (
-     item_id          INTEGER PRIMARY KEY,
-     NAME             VARCHAR(256),
+     item_id          SERIAL PRIMARY KEY,
+     name             VARCHAR(256),
      price            NUMERIC(10, 2),
      product_range_id INTEGER,
      FOREIGN KEY (product_range_id) REFERENCES product_range
@@ -39,7 +39,7 @@ CREATE TABLE item
 
 CREATE TABLE address
   (
-     address_id INTEGER PRIMARY KEY,
+     address_id SERIAL PRIMARY KEY,
      address    VARCHAR(40),
      street     VARCHAR(40),
      city       VARCHAR(25),
@@ -50,8 +50,8 @@ CREATE TABLE address
 
 CREATE TABLE customer
   (
-     customer_id INTEGER PRIMARY KEY,
-     NAME        VARCHAR(30),
+     customer_id SERIAL PRIMARY KEY,
+     name        VARCHAR(30),
      telephone   VARCHAR(20),
      address_id  INTEGER,
      FOREIGN KEY (address_id) REFERENCES address
@@ -59,7 +59,7 @@ CREATE TABLE customer
 
 CREATE TABLE salesorder
   (
-     order_id    INTEGER PRIMARY KEY,
+     order_id    SERIAL PRIMARY KEY,
      customer_id INTEGER,
      employee_id INTEGER,
      item_id     INTEGER,
@@ -70,5 +70,3 @@ CREATE TABLE salesorder
      FOREIGN KEY (employee_id) REFERENCES employee,
      FOREIGN KEY (item_id) REFERENCES item
   );
-
-GO

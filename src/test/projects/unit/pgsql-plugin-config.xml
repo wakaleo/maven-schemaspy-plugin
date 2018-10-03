@@ -34,11 +34,12 @@ under the License.
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>
-              <databaseType>postgresql</databaseType>
+              <databaseType>pgsql</databaseType>
               <database>test</database>
+              <schema>public</schema>
               <user>postgres</user>
               <host>127.0.0.1</host>
-              <outputDirectory>target/reports/postgresql-test</outputDirectory>
+              <outputDirectory>target/reports/pgsql-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
             </configuration>
         </plugin> 
