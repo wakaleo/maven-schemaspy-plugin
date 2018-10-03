@@ -13,7 +13,7 @@ skip_tags: true
 
 install:
   - cmd: echo %PATH%
-  - cmd: java -XshowSettings:vm -version
+  - cmd: java -XshowSettings:vm -showversion -Xshare:dump
   - cd C:\projects\schemaspy-maven-plugin
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
   - ps: .\.appveyor\set-maven-proxy.ps1
