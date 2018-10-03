@@ -73,7 +73,7 @@ before_script:
   - psql -c 'create database test;' -U postgres
   - psql -U postgres -d test -f ./sql/postgresql.sql
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
-  
+  - mysql test < ./sql/mysql.sql
 
 script:
   - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Pfull-tests

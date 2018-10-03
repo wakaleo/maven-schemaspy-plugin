@@ -568,15 +568,6 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>unit-tests</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                         <configuration>
                             <excludes>
                                 <exclude>**/*ExternalDatabaseTest.java</exclude>
@@ -592,6 +583,11 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/OracleExternalDatabaseTest.java</exclude>
+                            </excludes>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
