@@ -561,18 +561,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
-                <configuration>
-                    <jacocoReports>
-                        <file>${project.build.directory}/site/jacoco/jacoco.xml</file>
-                        <!-- file>${project.build.directory}/site/jacoco-it/jacoco.xml</file -->
-                    </jacocoReports>
-                    <repoToken>${repoToken}</repoToken>
-                </configuration>
-            </plugin>
         </plugins>
     </reporting>
     <profiles>
@@ -607,6 +595,10 @@
         </profile>
         <profile>
             <id>travis</id>
+            <properties>
+                <!-- should be environment provided -->
+                <repoToken />
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -618,6 +610,17 @@
                             </excludes>
                         </configuration>
                     </plugin>
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>4.3.0</version>
+                        <configuration>
+                        <jacocoReports>
+                            <file>${project.build.directory}/site/jacoco/jacoco.xml</file>
+                        </jacocoReports>
+                        <repoToken>${repoToken}</repoToken>
+                    </configuration>
+                </plugin>
                 </plugins>
             </build>
         </profile>
