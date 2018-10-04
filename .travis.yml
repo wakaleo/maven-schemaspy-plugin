@@ -84,6 +84,13 @@ script:
       mvn javadoc:test-javadoc;
     fi
 
+after_success:
+  # generate code coverage report, just for oraclejdk8 and latest maven
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$VERSION" == "3.5.4" ] &&
+       [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then
+         mvn -B -e -fae -Ptravis verify jacoco:report coveralls:report;
+    fi
+
 cache:
   directories:
   - $HOME/.m2
