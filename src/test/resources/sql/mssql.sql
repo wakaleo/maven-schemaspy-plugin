@@ -1,3 +1,5 @@
+USE test;
+
 DROP TABLE IF EXISTS salesorder;
 
 DROP TABLE IF EXISTS customer;
@@ -71,4 +73,10 @@ CREATE TABLE salesorder
      FOREIGN KEY (item_id) REFERENCES item
   );
 
+GO
+
+EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'My employee table comment', @level0type = N'SCHEMA', @level0name = N'dbo',@level1type = N'TABLE', @level1name = N'employee';
+GO
+
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = 'This is the description of the firstname column', @level0type = N'Schema', @level0name = 'dbo', @level1type = N'Table', @level1name = 'employee', @level2type = N'Column', @level2name = 'firstname';
 GO

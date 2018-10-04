@@ -67,7 +67,7 @@ before_install:
 #   - sudo java -XshowSettings:vm -showversion -Xshare:dump
 
 install:
-  - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
+  - mvn install -Dmaven.test.skip=true -B -V -fae -q
 
 before_script:
   - psql -c 'create database test;' -U postgres

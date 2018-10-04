@@ -36,9 +36,11 @@ under the License.
             <configuration>
               <databaseType>mssql</databaseType>
               <database>test</database>
+              <schema>dbo</schema>
               <user>sa</user>
               <password>Password12!</password>
               <host>127.0.0.1</host>
+              <port>1433</port>
               <outputDirectory>target/reports/mssql-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
             </configuration>

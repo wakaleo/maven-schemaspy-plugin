@@ -9,20 +9,18 @@ init:
 
 install:
   - cmd: echo %PATH%
-  - cmd: java -XshowSettings:vm -showversion -Xshare:dump
   - cd C:\projects\schemaspy-maven-plugin
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
   - ps: .\.appveyor\set-maven-proxy.ps1
+  - ps: choco install graphviz
   - mvn install -Dmaven.test.skip=true -B -V -fae -e
-
-
 
 build: off
 
 before_test:
-- cmd: echo "aanmaken en opzetten STAGING DB"
+- cmd: echo "create and setup database"
 - sqlcmd -S (local)\%INSTANCENAME% -U sa -P Password12! -Q "CREATE DATABASE test" -d "master"
-- sqlcmd -S (local)\%INSTANCENAME% -U sa -P Password12! -d "test" -i .\src\test\resources\sql\mysql.sql
+- sqlcmd -S (local)\%INSTANCENAME% -U sa -P Password12! -d "test" -i .\src\test\resources\sql\mssql.sql
 
 test_script:
   - cd C:\projects\schemaspy-maven-plugin

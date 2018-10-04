@@ -35,7 +35,7 @@ import java.util.Locale;
  *           relational database.
  *
  */
-@Mojo(name = "schemaspy", defaultPhase = LifecyclePhase.SITE)
+@Mojo(name = "schemaspy", defaultPhase = LifecyclePhase.SITE, threadSafe = false)
 public class SchemaSpyReport extends AbstractMavenReport {
 
     /**
@@ -292,14 +292,18 @@ public class SchemaSpyReport extends AbstractMavenReport {
     private String connprops;
 
     /**
-     * Don't generate ads in reports
+     * Don't generate ads in reports.
+     * @deprecated will be removed
      */
+    @Deprecated
     @Parameter(defaultValue ="true")
     private Boolean noAds;
 
     /**
-     * Don't generate sourceforge logos in reports
+     * Don't generate sourceforge logos in reports.
+     * @deprecated will be removed
      */
+    @Deprecated
     @Parameter(defaultValue ="true")
     private Boolean noLogo;
 

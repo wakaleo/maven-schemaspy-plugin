@@ -171,6 +171,7 @@ public class HtmlFormatter {
         return description.toString();
     }
 
+    @Deprecated
     protected boolean sourceForgeLogoEnabled() {
         return Config.getInstance().isLogoEnabled();
     }
