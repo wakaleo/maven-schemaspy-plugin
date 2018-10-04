@@ -1,8 +1,8 @@
 package com.wakaleo.schemaspy;
 
+import com.wakaleo.schemaspy.SchemaSpyReport;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.plugin.testing.resources.TestResources;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -13,14 +13,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeTrue;
 
-/**
- * SchemaSpyReport unit tests Test POM files is kept in test/resources/unit
- * directory.
- * 
- * @author john
- */
-public class MysqlExternalDatabaseTest {
-
+public class MSSQLExternalDatabaseTest {
     /**
      * Test resources.
      */
@@ -34,11 +27,10 @@ public class MysqlExternalDatabaseTest {
     public MojoRule rule = new MojoRule();
 
     @Test
-    @Ignore("This throws an error with the message 'Unknown table 'address' in information_schema'")
-    public void testMySqlConfiguration() throws Exception {
+    public void testMSSQLConfiguration() throws Exception {
 
         File projectCopy = this.resources.getBasedir("unit");
-        File testPom = new File(projectCopy,"mysql-plugin-config.xml");
+        File testPom = new File(projectCopy,"mssql-plugin-config.xml");
         assumeNotNull("POM file should not be null.", testPom);
         assumeTrue("POM file should exist as file.",
                 testPom.exists() && testPom.isFile());
@@ -47,8 +39,7 @@ public class MysqlExternalDatabaseTest {
         mojo.executeReport(Locale.getDefault());
 
         // check if the reports generated
-        File generatedFile = new File("./target/reports/mysql-test/schemaspy/index.html");
+        File generatedFile = new File("./target/reports/mssql-test/schemaspy/index.html");
         assertTrue(generatedFile.exists());
     }
-
 }

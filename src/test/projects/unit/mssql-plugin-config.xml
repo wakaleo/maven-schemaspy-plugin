@@ -23,7 +23,7 @@ under the License.
   <artifactId>custom-configuration</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <inceptionYear>2006</inceptionYear>
+  <inceptionYear>2018</inceptionYear>
   <name>Maven SchemaSpy Plugin Configuration Test</name>
   <url>http://maven.apache.org</url>
   <build>
@@ -34,12 +34,14 @@ under the License.
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>
-              <databaseType>mysql</databaseType>
+              <databaseType>mssql</databaseType>
               <database>test</database>
-              <schema>test</schema>
-              <user>root</user>
+              <schema>dbo</schema>
+              <user>sa</user>
+              <password>Password12!</password>
               <host>127.0.0.1</host>
-              <outputDirectory>target/reports/mysql-test</outputDirectory>
+              <port>1433</port>
+              <outputDirectory>target/reports/mssql-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
             </configuration>
         </plugin> 

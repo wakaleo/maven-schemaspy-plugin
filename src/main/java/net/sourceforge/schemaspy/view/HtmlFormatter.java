@@ -128,7 +128,7 @@ public class HtmlFormatter {
         html.writeln("  <li" + (isConstraintsPage() ? " id='current'" : "") + "><a href='" + path + "constraints.html' title='Useful for diagnosing error messages that just give constraint name or number'>Constraints</a></li>");
         html.writeln("  <li" + (isAnomaliesPage() ? " id='current'" : "") + "><a href='" + path + "anomalies.html' title=\"Things that might not be quite right\">Anomalies</a></li>");
         html.writeln("  <li" + (isColumnsPage() ? " id='current'" : "") + "><a href='" + path + encodeHref(HtmlColumnsPage.getInstance().getColumnInfos().get(0).toString()) + "' title=\"All of the columns in the schema\">Columns</a></li>");
-        html.writeln("  <li><a href='http://sourceforge.net/donate/index.php?group_id=137197' title='Please help keep SchemaSpy alive' target='_blank'>Donate</a></li>");
+        // html.writeln("  <li><a href='http://sourceforge.net/donate/index.php?group_id=137197' title='Please help keep SchemaSpy alive' target='_blank'>Donate</a></li>");
         html.writeln(" </ul>");
         html.writeln("</div>");
         html.writeln("</td></tr></table>");
@@ -171,6 +171,7 @@ public class HtmlFormatter {
         return description.toString();
     }
 
+    @Deprecated
     protected boolean sourceForgeLogoEnabled() {
         return Config.getInstance().isLogoEnabled();
     }

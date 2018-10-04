@@ -1,6 +1,15 @@
 language: java
 
-sudo: false
+sudo: required
+
+addons:
+  postgresql: 9.6
+  apt:
+    packages:
+    - graphviz
+
+services:
+  - mysql
 
 env:
   global:
@@ -19,7 +28,6 @@ jdk:
 - oraclejdk11
 - oraclejdk-ea
 - openjdk8
-
 
 matrix:
   fast_finish: true
@@ -56,13 +64,19 @@ before_install:
      fi
    - echo $VERSION
    - echo $M2_HOME
-   - java -XshowSettings:vm -version
+#   - sudo java -XshowSettings:vm -showversion -Xshare:dump
 
 install:
-  - mvn install -Dmaven.test.skip=true -B -V -fae -T2 -q
+  - mvn install -Dmaven.test.skip=true -B -V -fae -q
+
+before_script:
+  - psql -c 'create database test;' -U postgres
+  - psql -U postgres -d test -f ./src/test/resources/sql/pgsql.sql
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+  - mysql test < ./src/test/resources/sql/mysql.sql
 
 script:
-  - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true
+  - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Ptravis
   - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
       mvn javadoc:javadoc;
     fi

@@ -1,40 +1,47 @@
-init:
-  - git config --global core.autocrlf true
-  - git config --global core.safecrlf true
-
 clone_folder: C:\projects\schemaspy-maven-plugin
-
-# can't use shallow clone because we need to convert line endings in test expectations
-shallow_clone: false
-
 version: "{build}-{branch}"
+clone_depth: 5
 
-skip_tags: true
+init:
+- git config --global core.autocrlf true
+- git config --global core.safecrlf true
+- cmd: net start %SQL%
 
 install:
   - cmd: echo %PATH%
-  - cmd: java -XshowSettings:vm -version
   - cd C:\projects\schemaspy-maven-plugin
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
   - ps: .\.appveyor\set-maven-proxy.ps1
+  - ps: choco install graphviz
   - mvn install -Dmaven.test.skip=true -B -V -fae -e
 
 build: off
 
+before_test:
+- cmd: echo "create and setup database"
+- sqlcmd -S (local)\%INSTANCENAME% -U sa -P Password12! -Q "CREATE DATABASE test" -d "master"
+- sqlcmd -S (local)\%INSTANCENAME% -U sa -P Password12! -d "test" -i .\src\test\resources\sql\mssql.sql
+
 test_script:
   - cd C:\projects\schemaspy-maven-plugin
-  - mvn -e -fae -B -Dfailsafe.useFile=false clean test verify
+  - mvn -e -fae -B -Dfailsafe.useFile=false clean test -Pappveyor
 
 environment:
-
   matrix:
-    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+    - SQL: MSSQL$SQL2014
+      INSTANCENAME: SQL2014
+      JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    - SQL: MSSQL$SQL2016
+      INSTANCENAME: SQL2016
+      JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    - SQL: MSSQL$SQL2017
+      INSTANCENAME: SQL2017
+      JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 
 matrix:
   fast_finish: true
   allow_failures:
-    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+    - SQL: MSSQL$SQL2014
 
 cache:
   - C:\Users\appveyor\.m2\repository -> pom.xml

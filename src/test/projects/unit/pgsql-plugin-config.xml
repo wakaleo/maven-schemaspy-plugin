@@ -23,7 +23,7 @@ under the License.
   <artifactId>custom-configuration</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <inceptionYear>2006</inceptionYear>
+  <inceptionYear>2018</inceptionYear>
   <name>Maven SchemaSpy Plugin Configuration Test</name>
   <url>http://maven.apache.org</url>
   <build>
@@ -34,12 +34,12 @@ under the License.
             <artifactId>schemaspy-maven-plugin</artifactId>
             <version>@project.version@</version>
             <configuration>
-              <databaseType>mysql</databaseType>
+              <databaseType>pgsql</databaseType>
               <database>test</database>
-              <schema>test</schema>
-              <user>root</user>
+              <schema>public</schema>
+              <user>postgres</user>
               <host>127.0.0.1</host>
-              <outputDirectory>target/reports/mysql-test</outputDirectory>
+              <outputDirectory>target/reports/pgsql-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
             </configuration>
         </plugin> 

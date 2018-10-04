@@ -1129,8 +1129,9 @@ public class Config
      * Returns <code>true</code> if we should display advertisements.<p>
      * <b>Please do not disable ads unless absolutely necessary</b>.
      *
-
+     * @deprecated will be removed
      */
+    @Deprecated
     public boolean isAdsEnabled() {
         if (adsEnabled == null) {
             adsEnabled = !options.remove("-noads");
