@@ -12,7 +12,7 @@ install:
   - cd C:\projects\schemaspy-maven-plugin
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
   - ps: .\.appveyor\set-maven-proxy.ps1
-  - ps: choco install graphviz
+  - ps: choco install graphviz --cache-location=C:\Users\appveyor\.choco\cache
   - mvn install -Dmaven.test.skip=true -B -V -fae -e
 
 build: off
@@ -40,8 +40,9 @@ environment:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - SQL: MSSQL$SQL2014
+  #allow_failures:
+  #  - SQL: MSSQL$SQL2014
 
 cache:
   - C:\Users\appveyor\.m2\repository -> pom.xml
+  - C:\Users\appveyor\.choco\cache -> appveyor.yml

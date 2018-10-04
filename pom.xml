@@ -76,7 +76,6 @@
         <site>
             <id>gh-pages</id>
             <name>github pages site</name>
-            <!--<url>scm:git:ssh://git@github.com/GeoDienstenCentrum/${project.artifactId}.git</url>-->
             <url>scm:git:https://github.com/GeoDienstenCentrum/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
@@ -202,9 +201,6 @@
                 <version>3.1.0</version>
                 <configuration>
                     <filesets>
-                        <!--<fileset>-->
-                        <!--<directory>${basedir}/testdb</directory>-->
-                        <!--</fileset>-->
                         <fileset>
                             <directory>${basedir}</directory>
                             <includes>
@@ -338,7 +334,6 @@
                     <execution>
                         <id>scm-publish</id>
                         <phase>site-deploy</phase>
-                        <!-- deploy site with maven-scm-publish-plugin -->
                         <goals>
                             <goal>publish-scm</goal>
                         </goals>
@@ -351,8 +346,8 @@
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <preparationGoals>clean install -Dmaven.test.skip=true</preparationGoals>
+                    <releaseProfiles>release,in-memory-tests</releaseProfiles>
+                    <!-- preparationGoals>clean install -Dmaven.test.skip=true</preparationGoals -->
                     <goals>deploy</goals>
                     <pushChanges>true</pushChanges>
                 </configuration>
@@ -603,7 +598,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <id>appveyor</id>
             <build>
