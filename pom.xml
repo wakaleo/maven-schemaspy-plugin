@@ -1,20 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>nl.geodienstencentrum.maven</groupId>
     <artifactId>schemaspy-maven-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
     <version>5.1.0-SNAPSHOT</version>
-    <inceptionYear>2007</inceptionYear>
+    <packaging>maven-plugin</packaging>
+
     <name>SchemaSpy Maven Plugin</name>
-    <url>https://github.com/GeoDienstenCentrum/schemaspy-maven-plugin</url>
     <description>
         A Maven plugin designed to generate reports using the SchemaSpy command-line tool.
         SchemaSpy generates interactive HTML and graphical technical documentation
         describing a relational database.
     </description>
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
+    <url>https://github.com/GeoDienstenCentrum/schemaspy-maven-plugin</url>
+    <inceptionYear>2007</inceptionYear>
+    <organization>
+        <name>GeoDienstenCentrum</name>
+        <url>https://github.com/GeoDienstenCentrum</url>
+    </organization>
     <licenses>
         <license>
             <name>GNU Lesser General Public License, Version 2.1</name>
@@ -31,10 +35,7 @@
             <comments>For those parts of the code that are NOT in the net.sourceforge.schemaspy packages.</comments>
         </license>
     </licenses>
-    <organization>
-        <name>GeoDienstenCentrum</name>
-        <url>https://github.com/GeoDienstenCentrum</url>
-    </organization>
+
     <developers>
         <developer>
             <id>johnsmart</id>
@@ -50,6 +51,11 @@
             <organizationUrl>http://www.geodienstencentrum.nl/</organizationUrl>
         </developer>
     </developers>
+
+    <prerequisites>
+        <maven>3.3.9</maven>
+    </prerequisites>
+
     <scm>
         <connection>scm:git:git://github.com/GeoDienstenCentrum/${project.artifactId}.git</connection>
         <developerConnection>scm:git:git@github.com:GeoDienstenCentrum/${project.artifactId}.git</developerConnection>
@@ -79,6 +85,7 @@
             <url>scm:git:https://github.com/GeoDienstenCentrum/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
+
     <properties>
         <project.build.sourceVersion>1.8</project.build.sourceVersion>
         <project.build.targetVersion>1.8</project.build.targetVersion>
@@ -99,6 +106,7 @@
         <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -182,8 +190,14 @@
              </dependency>
         -->
     </dependencies>
+
     <build>
-        <plugins>
+        <pluginManagement><plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
@@ -199,6 +213,76 @@
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${maven-plugin-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-markdown</artifactId>
+                        <version>1.8</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>ru.concerteza.buildnumber</groupId>
+                <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+                <version>1.2.10</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin></plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -210,18 +294,9 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-            </plugin>
             <!-- Define the Main class of the output JAR file -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -239,16 +314,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5.2</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
-            </plugin>
-            <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>${maven-plugin-plugin.version}</version>
                 <configuration>
                     <goalPrefix>schemaspy</goalPrefix>
                 </configuration>
@@ -269,14 +335,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
-                        <artifactId>doxia-module-markdown</artifactId>
-                        <version>1.8</version>
-                    </dependency>
-                </dependencies>
                 <configuration>
                     <generateSitemap>true</generateSitemap>
                     <attach>true</attach>
@@ -286,13 +344,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-            </plugin>
-            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>pre-unit-test</id>
@@ -321,7 +374,6 @@
             <plugin>
                 <groupId>ru.concerteza.buildnumber</groupId>
                 <artifactId>maven-jgit-buildnumber-plugin</artifactId>
-                <version>1.2.10</version>
                 <executions>
                     <execution>
                         <id>git-buildnumber</id>
@@ -334,7 +386,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>3.0.0</version>
                 <configuration>
                     <content>${project.reporting.outputDirectory}</content>
                     <scmBranch>gh-pages</scmBranch>
@@ -352,7 +403,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
@@ -364,7 +414,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -379,7 +428,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -391,6 +439,7 @@
             </plugin>
         </plugins>
     </build>
+
     <reporting>
         <plugins>
             <plugin>
@@ -563,6 +612,7 @@
             </plugin>
         </plugins>
     </reporting>
+
     <profiles>
         <profile>
             <id>in-memory-tests</id>
@@ -613,14 +663,13 @@
                     <plugin>
                         <groupId>org.eluder.coveralls</groupId>
                         <artifactId>coveralls-maven-plugin</artifactId>
-                        <version>4.3.0</version>
                         <configuration>
-                        <jacocoReports>
-                            <file>${project.build.directory}/site/jacoco/jacoco.xml</file>
-                        </jacocoReports>
-                        <repoToken>${repoToken}</repoToken>
-                    </configuration>
-                </plugin>
+                            <jacocoReports>
+                                <file>${project.build.directory}/site/jacoco/jacoco.xml</file>
+                            </jacocoReports>
+                            <repoToken>${repoToken}</repoToken>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
