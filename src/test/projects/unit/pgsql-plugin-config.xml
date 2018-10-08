@@ -39,6 +39,7 @@ under the License.
               <schema>public</schema>
               <user>postgres</user>
               <host>127.0.0.1</host>
+              <port>5432</port>
               <outputDirectory>target/reports/pgsql-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
             </configuration>
