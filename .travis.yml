@@ -23,8 +23,8 @@ os:
 
 jdk:
 - oraclejdk8
-- oraclejdk9
-- oraclejdk10
+- openjdk9
+- openjdk10
 - oraclejdk11
 - oraclejdk-ea
 - openjdk8
