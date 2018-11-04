@@ -656,7 +656,7 @@
                         <configuration>
                             <excludes>
                                 <exclude>**/OracleExternalDatabaseTest.java</exclude>
-                                <exclude>**/MSSQLExternalDatabaseTest.java</exclude>
+                                <!-- <exclude>**/MSSQLExternalDatabaseTest.java</exclude> -->
                             </excludes>
                         </configuration>
                     </plugin>

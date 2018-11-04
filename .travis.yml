@@ -10,6 +10,7 @@ addons:
 
 services:
   - mysql
+  - docker
 
 env:
   global:
@@ -23,11 +24,11 @@ os:
 
 jdk:
 - oraclejdk8
-- openjdk9
-- openjdk10
 - oraclejdk11
 - oraclejdk-ea
 - openjdk8
+- openjdk9
+- openjdk10
 
 matrix:
   fast_finish: true
@@ -48,26 +49,21 @@ matrix:
   - os: linux
     jdk: oraclejdk8
     env: VERSION=3.6.0
-  #- os: osx
-  #  osx_image: xcode10
-  #  env: JVM=latest
-  #- os: osx
-  #  osx_image: xcode9.3
-  #- os: osx
-  #  osx_image: xcode9.4
   allow_failures:
   - jdk: oraclejdk-ea
 
 before_install:
-   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
          wget --no-check-certificate $(echo -n $BASEURL | sed -e 's#VERSION#'$VERSION'#g');
          unzip -qq $(echo -n $FILE | sed -e 's#VERSION#'$VERSION'#');
          export M2_HOME=$PWD/$(echo -n $DIR | sed -e 's#VERSION#'$VERSION'#');
          export PATH=$M2_HOME/bin:$PATH;
-     fi
-   - echo $VERSION
-   - echo $M2_HOME
-#   - sudo java -XshowSettings:vm -showversion -Xshare:dump
+    fi
+  - echo $VERSION
+  - echo $M2_HOME
+  - docker pull mcr.microsoft.com/mssql/server:2017-latest
+  - docker run -v "$(pwd)"/:/checkout  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password12!' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest
+  - docker ps -a
 
 install:
   - mvn install -Dmaven.test.skip=true -B -V -fae -q
@@ -77,6 +73,10 @@ before_script:
   - psql -U postgres -d test -f ./src/test/resources/sql/pgsql.sql
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
   - mysql test < ./src/test/resources/sql/mysql.sql
+  #- sqlcmd -S (local)\sql1 -U sa -P Password12! -Q "CREATE DATABASE test" -d "master"
+  - docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Password12!' -Q 'CREATE DATABASE test' -d "master"
+  #- sqlcmd -S (local)\sql1 -U sa -P Password12! -d "test" -i .\src\test\resources\sql\mssql.sql
+  - docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Password12!' -d 'test' -i /checkout/src/test/resources/sql/mssql.sql
 
 script:
   - mvn clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Ptravis
