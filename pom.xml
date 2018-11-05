@@ -344,6 +344,15 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${surefireArgLine}</argLine>
+                    <excludes>
+                        <exclude>**/*ExternalDatabaseTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <executions>
@@ -362,12 +371,10 @@
                     </execution>
                     <execution>
                         <id>post-unit-test</id>
-                        <phase>test</phase>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -406,7 +413,7 @@
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release,in-memory-tests</releaseProfiles>
+                    <releaseProfiles>release</releaseProfiles>
                     <!-- preparationGoals>clean install -Dmaven.test.skip=true</preparationGoals -->
                     <goals>deploy</goals>
                     <pushChanges>true</pushChanges>
@@ -612,27 +619,7 @@
             </plugin>
         </plugins>
     </reporting>
-
     <profiles>
-        <profile>
-            <id>in-memory-tests</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>${surefireArgLine}</argLine>
-                            <excludes>
-                                <exclude>**/*ExternalDatabaseTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>full-tests</id>
             <build>
@@ -654,9 +641,9 @@
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <argLine>${surefireArgLine}</argLine>
                             <excludes>
                                 <exclude>**/OracleExternalDatabaseTest.java</exclude>
-                                <!-- <exclude>**/MSSQLExternalDatabaseTest.java</exclude> -->
                             </excludes>
                         </configuration>
                     </plugin>
@@ -665,9 +652,12 @@
                         <artifactId>coveralls-maven-plugin</artifactId>
                         <configuration>
                             <jacocoReports>
-                                <file>${project.build.directory}/site/jacoco/jacoco.xml</file>
+                                <file>${project.reporting.outputDirectory}/jacoco/jacoco.xml</file>
                             </jacocoReports>
                             <repoToken>${repoToken}</repoToken>
+                            <sourceDirectories>
+                                <sourceDirectory>${project.build.directory}/generated-sources/plugin</sourceDirectory>
+                            </sourceDirectories>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -680,6 +670,7 @@
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <argLine>${surefireArgLine}</argLine>
                             <includes>
                                 <include>**/MSSQLExternalDatabaseTest.java</include>
                             </includes>
