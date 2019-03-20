@@ -192,7 +192,8 @@
     </dependencies>
 
     <build>
-        <pluginManagement><plugins>
+        <pluginManagement>
+            <plugins>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
@@ -276,9 +277,21 @@
                 <version>${maven-javadoc-plugin.version}</version>
             </plugin>
             <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.18</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <artifactId>maven-scm-publish-plugin</artifactId>
                 <version>3.0.0</version>
-            </plugin></plugins>
+            </plugin>
+        </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
@@ -542,7 +555,6 @@
                     <detectLinks>true</detectLinks>
                     <fixClassComment>true</fixClassComment>
                     <fixTags>all</fixTags>
-                    <javadocVersion>${project.build.sourceVersion}</javadocVersion>
                     <packagesheader>${project.artifactId}</packagesheader>
                     <doclint>none</doclint>
                     <tags>
