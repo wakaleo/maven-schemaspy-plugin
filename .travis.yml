@@ -17,39 +17,29 @@ env:
   - BASEURL=https://archive.apache.org/dist/maven/maven-3/VERSION/binaries/apache-maven-VERSION-bin.zip
   - FILE=apache-maven-VERSION-bin.zip
   - DIR=apache-maven-VERSION
-  - VERSION=3.5.4
+  - VERSION=3.6.1
 
 os:
 - linux
 
 jdk:
-- oraclejdk8
 - oraclejdk11
 - openjdk8
-- openjdk9
-- openjdk10
+- openjdk11
 
 matrix:
   fast_finish: true
   include:
   # additional builds
   - os: linux
-    jdk: oraclejdk8
+    jdk: openjdk8
     env: VERSION=3.3.9
   - os: linux
-    jdk: oraclejdk8
-    env: VERSION=3.5.0
+    jdk: openjdk8
+    env: VERSION=3.5.4
   - os: linux
-    jdk: oraclejdk8
-    env: VERSION=3.5.2
-  - os: linux
-    jdk: oraclejdk8
-    env: VERSION=3.5.3
-  - os: linux
-    jdk: oraclejdk8
+    jdk: openjdk8
     env: VERSION=3.6.0
-  allow_failures:
-  - jdk: oraclejdk-ea
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -79,17 +69,17 @@ before_script:
 
 script:
   - mvn -e -B -fae -Dorg.slf4j.simpleLogger.showDateTime=true -Dfailsafe.useFile=false -Ptravis clean test
-  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
+  - if [ "$TRAVIS_JDK_VERSION" == "openjdk8" ] && [ "$VERSION" == "3.6.1" ]; then
       mvn javadoc:javadoc;
     fi
-  - if [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && [ "$VERSION" == "3.5.4" ]; then
+  - if [ "$TRAVIS_JDK_VERSION" == "openjdk8" ] && [ "$VERSION" == "3.6.1" ]; then
       mvn javadoc:test-javadoc;
     fi
 
 after_success:
   # generate code coverage report, just for oraclejdk8 and latest maven
-  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$VERSION" == "3.5.4" ] &&
-       [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$VERSION" == "3.6.1" ] &&
+       [ "$TRAVIS_JDK_VERSION" == "openjdk8" ]; then
          mvn -B -e -fae -Ptravis jacoco:report coveralls:report;
     fi
 
