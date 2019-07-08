@@ -93,7 +93,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-libs.version>3.6.1</maven-libs.version>
         <maven-libs.annotations.version>3.6.0</maven-libs.annotations.version>
-        <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
