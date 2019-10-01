@@ -28,9 +28,6 @@ test_script:
 
 environment:
   matrix:
-    - SQL: MSSQL$SQL2014
-      INSTANCENAME: SQL2014
-      JAVA_HOME: C:\Program Files\Java\jdk1.8.0
     - SQL: MSSQL$SQL2016
       INSTANCENAME: SQL2016
       JAVA_HOME: C:\Program Files\Java\jdk1.8.0
@@ -40,8 +37,6 @@ environment:
 
 matrix:
   fast_finish: true
-  #allow_failures:
-  #  - SQL: MSSQL$SQL2014
 
 cache:
   - C:\Users\appveyor\.m2\repository -> pom.xml
