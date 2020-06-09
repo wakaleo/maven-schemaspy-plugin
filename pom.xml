@@ -96,7 +96,7 @@
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
-        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        <maven-project-info-reports-plugin.version>3.1.0</maven-project-info-reports-plugin.version>
         <maven-jxr-plugin.version>3.0.0</maven-jxr-plugin.version>
         <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
         <dependency-check-maven.version>5.3.2</dependency-check-maven.version>
