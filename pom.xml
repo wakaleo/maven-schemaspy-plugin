@@ -48,7 +48,7 @@
             <email>mprins@users.sf.net</email>
             <url>https://github.com/mprins/</url>
             <organization>GeodienstenCentrum</organization>
-            <organizationUrl>http://www.geodienstencentrum.nl/</organizationUrl>
+            <organizationUrl>https://geodienstencentrum.github.io/</organizationUrl>
         </developer>
     </developers>
 
@@ -181,20 +181,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.22</version>
-            <scope>test</scope>
+            <optional>true</optional>
         </dependency>
-        <!--
-             Oracle are not open
-
-             <dependency>
-             <groupId>com.oracle</groupId>
-             <artifactId>ojdbc</artifactId>
-             <version>11.2.0.2.0</version>
-             <scope>test</scope>
-             </dependency>
-        -->
+         <dependency>
+             <groupId>com.oracle.database.jdbc</groupId>
+             <artifactId>ojdbc8</artifactId>
+             <version>19.8.0.0</version>
+             <optional>true</optional>
+         </dependency>
     </dependencies>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -649,7 +644,7 @@
                 <!-- should be environment provided -->
                 <repoToken />
                 <!-- could also be NONE, see https://issues.apache.org/jira/browse/SUREFIRE-861 -->
-                <surefire.excludes.files>**/OracleExternalDatabaseTest.java</surefire.excludes.files>
+                <surefire.excludes.files />
             </properties>
             <build>
                 <plugins>

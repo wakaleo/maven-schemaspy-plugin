@@ -38,7 +38,7 @@ public class OracleExternalDatabaseTest  {
     public TestName name = new TestName();
 
     @Test
-    public void testMySqlConfiguration() throws Exception {
+    public void testOracleConfiguration() throws Exception {
         Logger.getLogger("global").info("Starting :" + name.getMethodName());
         File projectCopy = this.resources.getBasedir("unit");
         File testPom = new File(projectCopy,"oracle-plugin-config.xml");
