@@ -73,21 +73,21 @@ public class SchemaSpyMojoTest  {
         assertTrue(generatedFile.exists());
 
     }
-    @Test
-    public void testConfigurationUsingJDBCUrl() throws Exception {
-        File projectCopy = this.resources.getBasedir("unit");
-        File testPom = new File(projectCopy,"jdbcurl-test-plugin-config.xml");
-        assumeNotNull("POM file should not be null.", testPom);
-        assumeTrue("POM file should exist as file.",
-                testPom.exists() && testPom.isFile());
-
-        SchemaSpyReport mojo = (SchemaSpyReport) this.rule.lookupMojo("schemaspy",testPom);
-        mojo.executeReport(Locale.getDefault());
-
-        // check if the reports generated
-        File generatedFile = new File("./target/reports/jdbcurl-test/schemaspy/index.html");
-        System.out.println("generatedFile = " + generatedFile.getAbsolutePath());
-        assertTrue(generatedFile.exists());
-    }
+//    @Test
+//    public void testConfigurationUsingJDBCUrl() throws Exception {
+//        File projectCopy = this.resources.getBasedir("unit");
+//        File testPom = new File(projectCopy,"jdbcurl-test-plugin-config.xml");
+//        assumeNotNull("POM file should not be null.", testPom);
+//        assumeTrue("POM file should exist as file.",
+//                testPom.exists() && testPom.isFile());
+//
+//        SchemaSpyReport mojo = (SchemaSpyReport) this.rule.lookupMojo("schemaspy",testPom);
+//        mojo.executeReport(Locale.getDefault());
+//
+//        // check if the reports generated
+//        File generatedFile = new File("./target/reports/jdbcurl-test/schemaspy/index.html");
+//        System.out.println("generatedFile = " + generatedFile.getAbsolutePath());
+//        assertTrue(generatedFile.exists());
+//    }
 
 }

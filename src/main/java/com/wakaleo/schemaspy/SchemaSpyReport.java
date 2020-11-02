@@ -88,20 +88,20 @@ public class SchemaSpyReport extends AbstractMavenReport {
     @Parameter
     private String port;
 
-    /**
-     * The JDBC URL to be used to connect to the database. Rather than defining
-     * the database and host names and letting SchemaSpy build the URL, you can
-     * alternatively specify the complete JDBC URL using this parameter. If this
-     * parameter is defined, it will override the host address (which, as a
-     * result, is not needed). Note that you still need to specify the database
-     * type, since SchemaSpy uses its own database properties file for extra
-     * information about each database.
-     *
-     * @todo Would it be possible to guess the database type from the form of
-     *       the URL?
-         */
-    @Parameter
-    private String jdbcUrl;
+//    /**
+//     * The JDBC URL to be used to connect to the database. Rather than defining
+//     * the database and host names and letting SchemaSpy build the URL, you can
+//     * alternatively specify the complete JDBC URL using this parameter. If this
+//     * parameter is defined, it will override the host address (which, as a
+//     * result, is not needed). Note that you still need to specify the database
+//     * type, since SchemaSpy uses its own database properties file for extra
+//     * information about each database.
+//     *
+//     * @todo Would it be possible to guess the database type from the form of
+//     *       the URL?
+//         */
+//    @Parameter
+//    private String jdbcUrl;
 
     /**
      * The type of database being analysed - defaults to ora.
@@ -410,9 +410,9 @@ public class SchemaSpyReport extends AbstractMavenReport {
         String schemaSpyDirectory = outputDir.getAbsolutePath();
         List<String> argList = new ArrayList<String>();
 
-        if ((jdbcUrl != null) && (databaseType == null)) {
-            databaseType = JDBCHelper.extractDatabaseType(jdbcUrl);
-        }
+//        if ((jdbcUrl != null) && (databaseType == null)) {
+//            databaseType = JDBCHelper.extractDatabaseType(jdbcUrl);
+//        }
         addToArguments(argList, "-dp", pathToDrivers);
         addToArguments(argList, "-db", database);
         addToArguments(argList, "-host", host);
@@ -444,9 +444,7 @@ public class SchemaSpyReport extends AbstractMavenReport {
         addFlagToArguments(argList, "-cid", commentsInitiallyDisplayed);
         addFlagToArguments(argList, "-noads", noAds);
         addFlagToArguments(argList, "-nologo", noLogo);
-        /*
-        addToArguments(argList, "-jdbcUrl", jdbcUrl);
-        */
+//        addToArguments(argList, "-jdbcUrl", jdbcUrl);
 
         String[] args = (String[]) argList.toArray(new String[0]);
         getLog().info("Generating SchemaSpy report with parameters:");
