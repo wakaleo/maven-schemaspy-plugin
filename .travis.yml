@@ -1,7 +1,5 @@
 language: java
 
-sudo: required
-
 addons:
   postgresql: 9.6
   apt:

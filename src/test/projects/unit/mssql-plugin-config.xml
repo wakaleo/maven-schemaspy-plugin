@@ -27,7 +27,7 @@ under the License.
   <name>Maven SchemaSpy Plugin Configuration Test</name>
   <url>http://maven.apache.org</url>
   <build>
-    <finalName>test-plugin-configuration</finalName>
+    <finalName>mssql-test-plugin-configuration</finalName>
     <plugins>
         <plugin>
             <groupId>nl.geodienstencentrum.maven</groupId>

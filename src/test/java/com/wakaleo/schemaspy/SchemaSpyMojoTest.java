@@ -6,9 +6,11 @@ import org.apache.maven.plugin.testing.resources.TestResources;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
@@ -34,9 +36,13 @@ public class SchemaSpyMojoTest  {
     @Rule
     public MojoRule rule = new MojoRule();
 
+    @Rule
+    public TestName name = new TestName();
+
     @Before
     public void setUp() throws Exception {
         DatabaseHelper.setupDatabase("src/test/resources/sql/testdb.sql");
+        Logger.getLogger("global").info("Starting :" + name.getMethodName());
     }
 
     @Test

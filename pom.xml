@@ -91,6 +91,7 @@
         <project.build.targetVersion>1.8</project.build.targetVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <surefire.excludes.files>**/*ExternalDatabaseTest.java</surefire.excludes.files>
         <maven-libs.version>3.6.3</maven-libs.version>
         <maven-libs.annotations.version>3.6.0</maven-libs.annotations.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
@@ -105,7 +106,7 @@
         <maven-pmd-plugin.version>3.13.0</maven-pmd-plugin.version>
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     </properties>
@@ -364,7 +365,7 @@
                 <configuration>
                     <argLine>${surefireArgLine}</argLine>
                     <excludes>
-                        <exclude>**/*ExternalDatabaseTest.java</exclude>
+                        <exclude>${surefire.excludes.files}</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -637,31 +638,21 @@
     <profiles>
         <profile>
             <id>full-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <!-- could also be NONE, see https://issues.apache.org/jira/browse/SUREFIRE-861 -->
+                <surefire.excludes.files />
+            </properties>
         </profile>
         <profile>
             <id>travis</id>
             <properties>
                 <!-- should be environment provided -->
                 <repoToken />
+                <!-- could also be NONE, see https://issues.apache.org/jira/browse/SUREFIRE-861 -->
+                <surefire.excludes.files>**/OracleExternalDatabaseTest.java</surefire.excludes.files>
             </properties>
             <build>
                 <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>${surefireArgLine}</argLine>
-                            <excludes>
-                                <exclude>**/OracleExternalDatabaseTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>org.eluder.coveralls</groupId>
                         <artifactId>coveralls-maven-plugin</artifactId>

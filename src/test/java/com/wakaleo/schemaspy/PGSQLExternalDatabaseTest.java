@@ -4,9 +4,11 @@ import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.plugin.testing.resources.TestResources;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
@@ -25,9 +27,12 @@ public class PGSQLExternalDatabaseTest {
     @Rule
     public MojoRule rule = new MojoRule();
 
+    @Rule
+    public TestName name = new TestName();
+
     @Test
     public void testPGSQLConfiguration() throws Exception {
-
+        Logger.getLogger("global").info("Starting :" + name.getMethodName());
         File projectCopy = this.resources.getBasedir("unit");
         File testPom = new File(projectCopy,"pgsql-plugin-config.xml");
         assumeNotNull("POM file should not be null.", testPom);
@@ -39,6 +44,7 @@ public class PGSQLExternalDatabaseTest {
 
         // check if the reports generated
         File generatedFile = new File("./target/reports/pgsql-test/schemaspy/index.html");
+        Logger.getLogger("global").info("generatedFile = " + generatedFile.getAbsolutePath());
         assertTrue(generatedFile.exists());
     }
 }
