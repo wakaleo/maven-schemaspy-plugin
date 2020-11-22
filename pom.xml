@@ -672,19 +672,9 @@
         </profile>
         <profile>
             <id>appveyor</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>${surefireArgLine}</argLine>
-                            <includes>
-                                <include>**/MSSQLExternalDatabaseTest.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <surefire.excludes.files>**/Oracle*Test.java,**/Mysql*Test.java,**/PGSQL*Test.java</surefire.excludes.files>
+            </properties>
         </profile>
         <profile>
             <id>release</id>
