@@ -47,9 +47,9 @@ before_install:
     fi
   - echo $VERSION
   - echo $M2_HOME
-  - sh ".travis/start-oracle.sh"
   - docker pull mcr.microsoft.com/mssql/server:2017-latest
   - docker run -v "$(pwd)"/:/checkout  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password12!' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest
+  - sh ".travis/start-oracle.sh"
   - docker ps -a
 
 install:
@@ -68,7 +68,7 @@ before_script:
   - docker exec -i schemaspy /opt/oracle/product/18c/dbhomeXE/bin/sqlplus -l schemaspy/schemaspy@//localhost:1521/XE < ./src/test/resources/sql/oracle.sql
 
 script:
-  - mvn -e -B -fae -Ptravis clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Dfailsafe.useFile=false
+  - mvn -e -B -fae -Ptravis clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss,SSS -Dfailsafe.useFile=false
   - if [ "$TRAVIS_JDK_VERSION" == "openjdk8" ] && [ "$VERSION" == "3.6.3" ]; then
       mvn javadoc:javadoc;
     fi
