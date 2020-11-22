@@ -36,22 +36,14 @@ under the License.
             <configuration>
               <databaseType>orathin</databaseType>
               <database>xe</database>
-              <user>TEST</user>
-              <password>TEST</password>
-              <host>tui</host>
+              <user>SCHEMASPY</user>
+              <password>schemaspy</password>
+              <host>127.0.0.1</host>
               <port>1521</port>
               <outputDirectory>target/reports/oracle-test</outputDirectory>
               <schemaDescription>Maven Plugin SchemaSpy test</schemaDescription>
-              <pathToDrivers>${com.oracle:ojdbc:jar}</pathToDrivers>
             </configuration>
         </plugin> 
     </plugins>
   </build>
-  <dependencies>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>11.2.0.2.0</version>
-        </dependency>
-  </dependencies>
 </project>

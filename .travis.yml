@@ -49,6 +49,7 @@ before_install:
   - echo $M2_HOME
   - docker pull mcr.microsoft.com/mssql/server:2017-latest
   - docker run -v "$(pwd)"/:/checkout  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password12!' -p 1433:1433 --name sql1 -d mcr.microsoft.com/mssql/server:2017-latest
+  - sh ".travis/start-oracle.sh"
   - docker ps -a
 
 install:
@@ -63,9 +64,11 @@ before_script:
   - docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Password12!' -Q 'CREATE DATABASE test' -d "master"
   #- sqlcmd -S (local)\sql1 -U sa -P Password12! -d "test" -i .\src\test\resources\sql\mssql.sql
   - docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Password12!' -d 'test' -i /checkout/src/test/resources/sql/mssql.sql
+  - docker exec -i schemaspy /opt/oracle/product/18c/dbhomeXE/bin/sqlplus -l system/oracle@//localhost:1521/XE < .travis/create_oracle_user.sql
+  - docker exec -i schemaspy /opt/oracle/product/18c/dbhomeXE/bin/sqlplus -l schemaspy/schemaspy@//localhost:1521/XE < ./src/test/resources/sql/oracle.sql
 
 script:
-  - mvn -e -B -fae -Dorg.slf4j.simpleLogger.showDateTime=true -Dfailsafe.useFile=false -Ptravis clean test
+  - mvn -e -B -fae -Ptravis clean test -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss,SSS -Dfailsafe.useFile=false
   - if [ "$TRAVIS_JDK_VERSION" == "openjdk8" ] && [ "$VERSION" == "3.6.3" ]; then
       mvn javadoc:javadoc;
     fi

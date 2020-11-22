@@ -32,7 +32,7 @@ public class PGSQLExternalDatabaseTest {
 
     @Test
     public void testPGSQLConfiguration() throws Exception {
-        Logger.getLogger("global").info("Starting :" + name.getMethodName());
+        Logger.getLogger("global").info("Starting: " + name.getMethodName());
         File projectCopy = this.resources.getBasedir("unit");
         File testPom = new File(projectCopy,"pgsql-plugin-config.xml");
         assumeNotNull("POM file should not be null.", testPom);
